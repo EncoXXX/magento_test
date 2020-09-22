@@ -1,15 +1,25 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2column-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <title>
             Test View
         </title>
     </head>
     <body>
+        <referenceContainer name="columns">
+            <referenceContainer name="div.sidebar.main">
+                <block
+                    class="Magento\Framework\View\Element\Template"
+                    name="left-side-bar-column"
+                    template="Enco_Module::left.phtml"
+                />
+            </referenceContainer>
+        </referenceContainer>
+
         <referenceContainer name="content">
             <block class="Enco\Module\Block\Display" name="module_display" template="Enco_Module::temp.phtml">
                 <arguments>
-                    <argument name="user_name" xsi:type="string">Andrew</argument>
+                    <argument name="UserName" xsi:type="string">Andrew</argument>
                 </arguments>
             </block>
         </referenceContainer>
