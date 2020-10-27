@@ -5,7 +5,7 @@
  * @author Andriy Bednarskiy
  * @copyright 2020 Smile
  */
-namespace Enco\Module\Controller\Index;
+namespace Enco\AdminBlock\Controller\Index;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ResponseInterface;
@@ -15,9 +15,9 @@ use Magento\Framework\View\Result\Layout;
 
 /**
  * Class Display
- * @package Enco\Module\Controller\Index
+ * @package Enco\AdminBlock
  */
-class Display extends Action
+class Index extends Action
 {
     /**
      * Execute method

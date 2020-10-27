@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\Block\Account\Dashboard\Info">
+        <plugin name="enco_adminblock_info_plugin" type="Enco\AdminBlock\Plugin\Info" sortOrder="5"/>
+    </type>
+</config>

@@ -1,0 +1,18 @@
+<?php
+/**
+ * @var $block Enco\AdminBlock\Block
+ */
+?>
+<table>
+    <?php
+    foreach ($block->getAllowedRam() as $allowedRam) {
+        //    echo "Size: {$allowedRam}<br>";
+        echo "
+            <tr>
+                <td>Size</td>
+                <td>{$allowedRam}</td>
+            </tr>
+        ";
+    }
+    ?>
+</table>

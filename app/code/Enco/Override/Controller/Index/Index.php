@@ -1,11 +1,11 @@
 <?php
 /**
  * @category Smile
- * @package Enco\Module
- * @author Andriy Bednarskiy
+ * @package Encp\Override
+ * @author Andriy Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Smile
  */
-namespace Enco\Module\Controller\Index;
+namespace Enco\Override\Controller\Index;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ResponseInterface;
@@ -14,13 +14,13 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Layout;
 
 /**
- * Class Display
- * @package Enco\Module\Controller\Index
+ * Class Index
+ * @package Enco\Override\Controller\Index
  */
-class Display extends Action
+class Index extends Action
 {
     /**
-     * Execute method
+     * Execute
      * @return ResponseInterface|ResultInterface|Layout
      */
     public function execute()

@@ -1,0 +1,21 @@
+<?php
+/**
+ * @category Smile
+ * @package Enco\Newsletter
+ * @author Andriy Bednarskiy <bednarsasha@gmail.com>
+ * @copyright 2020 Smile
+ */
+use Enco\Observer\Block\Index;
+
+/**
+ * @var $block Index
+ */
+
+/**
+ * @var $usd array
+ */
+
+$usd = $block->getUsdToUah();
+
+echo "Станом на {$usd["date"]} долар вартує {$usd["value"]} грн за одиницю<br>";
+

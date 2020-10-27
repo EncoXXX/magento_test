@@ -1,8 +1,20 @@
 <?php
+/**
+ * @category Smile
+ * @package Enco\Module
+ * @author Andriy Bednarskiy <bednarsasha@gmail.com>
+ * @copyright 2020 Smile
+ */
 use Enco\Module\Block\Display;
 /**
  * @var $block Display
  */
-echo $block->sayHello();
+
+/**
+ * @var $UserName string
+ */
+echo $block->SayHello();
+
 $UserName = $block->getData("UserName");
 echo "<br>User name: {$UserName}";
+

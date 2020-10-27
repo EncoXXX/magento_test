@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="enco_observer_event">
+        <observer name="enco_observer" instance="Enco\Observer\Observer\AddText" />
+    </event>
+</config>

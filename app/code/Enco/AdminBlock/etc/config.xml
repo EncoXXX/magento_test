@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <god_mode>
+            <details>
+                <suffix_name>GOD</suffix_name>
+                <is_suffix_name_visible>0</is_suffix_name_visible>
+            </details>
+        </god_mode>
+    </default>
+</config>

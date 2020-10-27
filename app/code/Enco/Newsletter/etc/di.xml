@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Enco\Newsletter\Block\Index">
+        <plugin name="enco_newsletter_plugin" type="Enco\Newsletter\Plugin\Mainpage\IndexPlugin" sortOrder="5"/>
+    </type>
+</config>

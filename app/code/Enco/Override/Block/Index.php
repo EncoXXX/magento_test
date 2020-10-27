@@ -1,24 +1,23 @@
 <?php
 /**
  * @category Smile
- * @package Enco\Module
+ * @package Encp\Override
  * @author Andriy Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Smile
  */
-namespace Enco\Module\Block;
+namespace Enco\Override\Block;
 
-use Magento\Framework\Phrase;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 
 /**
- * Class Display
- * @package Enco\Module\Block
+ * Class Index
+ * @package Enco\Override\Block
  */
-class Display extends Template
+class Index extends Template
 {
     /**
-     * Display constructor.
+     * Index constructor.
      * @param Context $context
      * @param array $data
      */
@@ -26,15 +25,4 @@ class Display extends Template
     {
         parent::__construct($context, $data);
     }
-
-    /**
-     * Say hello (but says TADAAAAAAAM)
-     * @return Phrase
-     */
-    public function SayHello()
-    {
-        return __("Ta-daaaaaam!!!");
-    }
-
-
 }
