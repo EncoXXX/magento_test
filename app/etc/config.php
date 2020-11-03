@@ -261,6 +261,7 @@ return [
         'Enco_Newsletter' => 1,
         'Enco_Observer' => 1,
         'Enco_Override' => 1,
+        'Enco_UrlHistory' => 1,
         'Klarna_Core' => 1,
         'Klarna_Ordermanagement' => 1,
         'Klarna_Kp' => 1,

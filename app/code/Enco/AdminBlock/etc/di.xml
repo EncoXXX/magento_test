@@ -3,4 +3,5 @@
     <type name="Magento\Customer\Block\Account\Dashboard\Info">
         <plugin name="enco_adminblock_info_plugin" type="Enco\AdminBlock\Plugin\Info" sortOrder="5"/>
     </type>
+
 </config>
