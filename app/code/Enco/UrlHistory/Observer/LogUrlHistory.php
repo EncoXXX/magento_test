@@ -37,29 +37,29 @@ class LogUrlHistory implements ObserverInterface
      */
     protected $customerSession;
 
-//    public function __construct(
-//        UrlHistoryRepositoryInterface $urlHistoryRepository,
-//        UrlHistoryFactory $urlHistoryFactory,
-//        Session $customerSession
-//    ) {
-//        $this->urlHistoryRepository = $urlHistoryRepository;
-//        $this->urlHistoryFactory = $urlHistoryFactory;
-//        $this->customerSession = $customerSession;
-//    }
+    public function __construct(
+        UrlHistoryRepositoryInterface $urlHistoryRepository,
+        UrlHistoryFactory $urlHistoryFactory,
+        Session $customerSession
+    ) {
+        $this->urlHistoryRepository = $urlHistoryRepository;
+        $this->urlHistoryFactory = $urlHistoryFactory;
+        $this->customerSession = $customerSession;
+    }
     /**
      * Execute method for observer
      * @param Observer $observer
      */
     public function execute(Observer $observer)
     {
-//        /** @var Http $request */
-//        $request = $observer->getRequest();
-//        /** @var UrlHistory $model */
-//        $model = $this->UrlHistoryFactory->create();
-//        $model->setCustomerId($this->customerSession->getCustomerId())
-//            ->setVisitedUrl($request->getRequestUri())
-//            ->setIsActive(UrlHistoryInterface::ENABLED);
-//        $this->urlHistoryRepository->save($model);
+        /** @var Http $request */
+        $request = $observer->getRequest();
+        /** @var UrlHistory $model */
+        $model = $this->urlHistoryRepository->create();
+        $model->setCustomerId($this->customerSession->getCustomerId())
+            ->setVisitedUrl($request->getRequestUri())
+            ->setIsActive(UrlHistoryInterface::ENABLED);
+        $this->urlHistoryRepository->save($model);
 
     }
 }

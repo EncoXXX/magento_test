@@ -1,18 +1,14 @@
 <?php
 
-
 namespace Enco\UrlHistory\Model;
 
-
 use Enco\UrlHistory\Api\Data\UrlHistoryInterface;
-use Magento\Framework\Model\AbstractModel;
-
 use Enco\UrlHistory\Model\ResourceModel\UrlHistory as ResourceModel;
 
+use Magento\Framework\Model\AbstractModel;
 
 class UrlHistory extends AbstractModel implements UrlHistoryInterface
 {
-
     protected function _construct()
     {
         parent::_construct();
@@ -45,7 +41,6 @@ class UrlHistory extends AbstractModel implements UrlHistoryInterface
     public function getCreatedAt(): string
     {
         return $this->getData(UrlHistoryInterface::CREATED_AT);
-
     }
 
     /**

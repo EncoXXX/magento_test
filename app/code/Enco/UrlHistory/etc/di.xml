@@ -4,6 +4,6 @@
     <preference for="Enco\UrlHistory\Api\Data\UrlHistoryInterface"
                 type="Enco\UrlHistory\Model\CustomerVisitedUrls"/>
 
-    <preference for="Enco\UrlHistory\Api\CustomerVisitedUrlsRepositoryInterface"
-                type="Enco\UrlHistory\Model\CustomerVisitedUrlsRepository"/>
+    <preference for="Enco\UrlHistory\Api\UrlHistoryRepositoryInterface"
+                type="Enco\UrlHistory\Model\UrlHistoryRepository"/>
 </config>
