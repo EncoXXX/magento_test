@@ -7,6 +7,7 @@
                 comment="ID"/>
         <column xsi:type="int" name="customer_id" nullable="true" padding="10" comment="customer id" unsigned="true"/>
         <column xsi:type="varchar" name="visited_url" nullable="false" length="255" comment="Visited url"/>
+        <column xsi:type="varchar" name="customer_name" nullable="true" length="255" comment="Customer name"/>
         <column xsi:type="datetime" name="created_at" default="CURRENT_TIMESTAMP" comment="From"/>
         <column xsi:type="smallint" name="is_active" padding="6" unsigned="false" nullable="false"
                 default="0" comment="Is Active"/>

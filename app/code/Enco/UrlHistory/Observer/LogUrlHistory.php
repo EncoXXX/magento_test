@@ -12,14 +12,18 @@ namespace Enco\UrlHistory\Observer;
 
 use Enco\UrlHistory\Api\Data\UrlHistoryInterface;
 use Enco\UrlHistory\Api\UrlHistoryRepositoryInterface;
-use Enco\UrlHistory\Model\UrlHistory;
 use Enco\UrlHistory\Model\UrlHistoryFactory;
 use Enco\UrlHistory\Model\UrlHistoryRepository;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
 
+/**
+ * Observer LogUrlHistory
+ * @package Enco\UrlHistory\Observer
+ */
 class LogUrlHistory implements ObserverInterface
 {
     /**
@@ -46,20 +50,33 @@ class LogUrlHistory implements ObserverInterface
         $this->urlHistoryFactory = $urlHistoryFactory;
         $this->customerSession = $customerSession;
     }
+
     /**
      * Execute method for observer
      * @param Observer $observer
+     * @throws LocalizedException
      */
     public function execute(Observer $observer)
     {
         /** @var Http $request */
         $request = $observer->getRequest();
-        /** @var UrlHistory $model */
-        $model = $this->urlHistoryRepository->create();
-        $model->setCustomerId($this->customerSession->getCustomerId())
-            ->setVisitedUrl($request->getRequestUri())
-            ->setIsActive(UrlHistoryInterface::ENABLED);
-        $this->urlHistoryRepository->save($model);
+        $model = $this->urlHistoryFactory->create();
 
+        /**
+         * @var string|null $name
+         */
+        $name = $this->customerSession->getCustomer()->getName();
+        if(trim($name) == ''){
+            $name = null;
+        }
+
+        $model->setCustomerId($this->customerSession->getCustomerId() ?: null)
+            ->setVisitedUrl($request->getRequestString() ?: "none")
+            ->setIsActive(UrlHistoryInterface::ENABLED)
+            ->setCustomerName($name);
+        $answer = $this->urlHistoryRepository->save($model);
+        if ($answer == null) {
+            echo __("Cant save data(");
+        }
     }
 }

@@ -10,8 +10,13 @@
 namespace Enco\UrlHistory\Model\ResourceModel;
 
 use Enco\UrlHistory\Api\Data\UrlHistoryInterface;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
-class UrlHistory extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+/**
+ * Resource model for UrlHistory
+ * @package Enco\UrlHistory\Model\ResourceModel
+ */
+class UrlHistory extends AbstractDb
 {
 
     /**

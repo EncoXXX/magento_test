@@ -21,6 +21,7 @@ class Index extends \Magento\Framework\App\Action\Action
 {
 
     /**
+     * Execute method
      * @return ResponseInterface|ResultInterface|void
      */
     public function execute()

@@ -1,6 +1,83 @@
 <?php
+
+use Enco\UrlHistory\Model\UrlHistory;
+use Magento\Framework\Api\Search\SearchResult;
+
 /**
  * @var \Enco\UrlHistory\Block\Index $block
  */
-//var_dump($block);
-echo __("It works)");
+
+/**
+ * @var SearchResult $registeredUrlHistoryList
+ */
+$registeredUrlHistoryList = $block->urlHistoryViewModel->getRegisteredUrlHistory();
+
+/**
+ * @var SearchResult $unregisteredUrlHistoryList
+ */
+$unregisteredUrlHistoryList = $block->urlHistoryViewModel->getUnregisteredUrlHistory();
+
+?>
+<h2>Unregistered Url History</h2>
+<table>
+    <tr>
+        <td><b><?php echo __("Id")?></b></td>
+        <td><b><?php echo __("Url")?></b></td>
+        <td><b><?php echo __("Created At")?></b></td>
+    </tr>
+
+    <?php
+    foreach ($unregisteredUrlHistoryList->getItems() as $item):
+        /**
+         * @var UrlHistory $item
+         */
+        $url = $item->getVisitedUrl();
+        if (strlen($url) > 60) {
+            $url = substr($url, 0, 60) . "...";
+        }
+        ?>
+        <tr>
+            <td><?php echo $item->getId()?></td>
+            <td><a href="<?php echo $url?>"><?php echo $url?></a></td>
+            <td><?php echo $item->getCreatedAt()?></td>
+        </tr>
+
+    <?php endforeach;?>
+</table>
+
+
+<h2>Registered Url History</h2>
+<table>
+    <tr>
+        <td><b><?php echo __("Id")?></b></td>
+        <td><b><?php echo __("Url")?></b></td>
+        <td><b><?php echo __("First name")?></b></td>
+        <td><b><?php echo __("Last name")?></b></td>
+        <td><b><?php echo __("Email")?></b></td>
+        <td><b><?php echo __("Created At")?></b></td>
+    </tr>
+
+    <?php
+
+    foreach ($registeredUrlHistoryList->getItems() as $item):
+        /**
+         * @var UrlHistory $item
+         */
+
+        $url = $item->getVisitedUrl();
+        if (strlen($url) > 60) {
+            $url = substr($url, 0, 60) . "...";
+        }
+        ?>
+
+        <tr>
+            <td><?php echo $item->getId()?></td>
+            <td><a href="<?php echo $url?>"><?php echo $url?></a></td>
+            <td><?php echo $item->getFirstname() ?: __("No first name")?></td>
+            <td><?php echo $item->getLastname() ?: __("No last name")?></td>
+            <td><?php echo $item->getEmail() ?: __("No email")?></td>
+            <td><?php echo $item->getCreatedAt()?></td>
+        </tr>
+
+    <?php endforeach;?>
+</table>

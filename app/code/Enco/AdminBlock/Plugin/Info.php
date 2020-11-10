@@ -34,6 +34,7 @@ class Info
     }
 
     /**
+     * Insert suffix after name
      * @param $subject
      * @param $result
      * @return string

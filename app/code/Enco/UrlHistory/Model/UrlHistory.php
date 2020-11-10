@@ -1,14 +1,26 @@
 <?php
-
+/**
+ * Model for UrlHistory
+ * @category Smile
+ * @package Enco\UrlHistory
+ * @author Andriy Bednarskiy <bednarsasha@gmail.com>
+ * @copyright 2020 Smile
+ */
 namespace Enco\UrlHistory\Model;
 
 use Enco\UrlHistory\Api\Data\UrlHistoryInterface;
 use Enco\UrlHistory\Model\ResourceModel\UrlHistory as ResourceModel;
-
 use Magento\Framework\Model\AbstractModel;
 
+/**
+ * Class UrlHistory
+ * @package Enco\UrlHistory\Model
+ */
 class UrlHistory extends AbstractModel implements UrlHistoryInterface
 {
+    /**
+     * Constructor for model
+     */
     protected function _construct()
     {
         parent::_construct();
@@ -35,6 +47,15 @@ class UrlHistory extends AbstractModel implements UrlHistoryInterface
     }
 
     /**
+     * Get customer name
+     * @return string|null
+     */
+    public function getCustomerName(): ?string
+    {
+        return trim($this->getData(UrlHistoryInterface::CUSTOMER_NAME));
+    }
+
+    /**
      * Get Created At
      * @return string
      */
@@ -54,10 +75,10 @@ class UrlHistory extends AbstractModel implements UrlHistoryInterface
 
     /**
      * Set Customer ID
-     * @param int $id
+     * @param int|null $id
      * @return UrlHistoryInterface
      */
-    public function setCustomerId(int $id): UrlHistoryInterface
+    public function setCustomerId(?int $id): UrlHistoryInterface
     {
         return $this->setData(UrlHistoryInterface::CUSTOMER_ID, $id);
     }
@@ -70,6 +91,16 @@ class UrlHistory extends AbstractModel implements UrlHistoryInterface
     public function setVisitedUrl(string $url): UrlHistoryInterface
     {
         return $this->setData(UrlHistoryInterface::VISITED_URL, $url);
+    }
+
+    /**
+     * Set Customer Name
+     * @param string|null $name
+     * @return UrlHistoryInterface
+     */
+    public function setCustomerName(?string $name): UrlHistoryInterface
+    {
+        return $this->setData(UrlHistoryInterface::CUSTOMER_NAME, $name);
     }
 
     /**

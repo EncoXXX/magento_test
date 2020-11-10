@@ -1,0 +1,16 @@
+{
+    "url_history": {
+        "column": {
+            "id": true,
+            "customer_id": true,
+            "visited_url": true,
+            "customer_name": true,
+            "created_at": true,
+            "is_active": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "URL_HISTORY_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true
+        }
+    }
+}
