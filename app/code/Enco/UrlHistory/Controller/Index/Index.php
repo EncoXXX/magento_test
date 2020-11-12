@@ -10,6 +10,7 @@
 namespace Enco\UrlHistory\Controller\Index;
 
 
+use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 

@@ -6,7 +6,9 @@ use Magento\Framework\Api\Search\SearchResult;
 /**
  * @var \Enco\UrlHistory\Block\Index $block
  */
+$data = "Bla bla bla <h1>Hello</h1><br> <b>Send me an angel</b>";
 
+echo $block->escapeHtml($data, ["br", "b"]);
 /**
  * @var SearchResult $registeredUrlHistoryList
  */
@@ -17,10 +19,15 @@ $registeredUrlHistoryList = $block->urlHistoryViewModel->getRegisteredUrlHistory
  */
 $unregisteredUrlHistoryList = $block->urlHistoryViewModel->getUnregisteredUrlHistory();
 
+/**
+ * @var SearchResult $unregisteredUrlHistoryListShort
+ */
+$unregisteredUrlHistoryListShort = $block->urlHistoryViewModel->getUnregisteredUrlHistoryShort();
+
 ?>
 <h2>Unregistered Url History</h2>
 <table>
-    <tr>
+    <tr style="border-bottom: #cfcfcf 1px solid">
         <td><b><?php echo __("Id")?></b></td>
         <td><b><?php echo __("Url")?></b></td>
         <td><b><?php echo __("Created At")?></b></td>
@@ -45,10 +52,36 @@ $unregisteredUrlHistoryList = $block->urlHistoryViewModel->getUnregisteredUrlHis
     <?php endforeach;?>
 </table>
 
+<h2>Unregistered Url History (Short)</h2>
+<table>
+    <tr style="border-bottom: #cfcfcf 1px solid">
+        <td><b><?php echo __("Id")?></b></td>
+        <td><b><?php echo __("Url")?></b></td>
+        <td><b><?php echo __("Created At")?></b></td>
+    </tr>
+
+    <?php
+    foreach ($unregisteredUrlHistoryListShort->getItems() as $item):
+        /**
+         * @var UrlHistory $item
+         */
+        $url = $item->getVisitedUrl();
+        if (strlen($url) > 60) {
+            $url = substr($url, 0, 60) . "...";
+        }
+        ?>
+        <tr>
+            <td><?php echo $item->getId()?></td>
+            <td><a href="<?php echo $url?>"><?php echo $url?></a></td>
+            <td><?php echo $item->getCreatedAt()?></td>
+        </tr>
+
+    <?php endforeach;?>
+</table>
 
 <h2>Registered Url History</h2>
 <table>
-    <tr>
+    <tr style="border-bottom: #cfcfcf 1px solid">
         <td><b><?php echo __("Id")?></b></td>
         <td><b><?php echo __("Url")?></b></td>
         <td><b><?php echo __("First name")?></b></td>

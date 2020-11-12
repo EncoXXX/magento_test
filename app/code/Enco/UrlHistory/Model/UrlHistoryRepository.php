@@ -124,10 +124,14 @@ class UrlHistoryRepository implements UrlHistoryRepositoryInterface
         $searchResult->setSearchCriteria($searchCriteria);
         $searchResult->setItems($collection->getItems());
         $searchResult->setTotalCount($collection->getSize());
-
         return $searchResult;
     }
 
+    /**
+     * Get List with customer data (by customer id)
+     * @param SearchCriteriaInterface $searchCriteria
+     * @return SearchResult
+     */
     public function getListWithCustomer(SearchCriteriaInterface $searchCriteria)
     {
         $collection = $this->collectionFactory->create();

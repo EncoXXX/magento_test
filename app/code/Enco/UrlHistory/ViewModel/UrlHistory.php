@@ -10,8 +10,11 @@ namespace Enco\UrlHistory\ViewModel;
 
 use Enco\UrlHistory\Api\Data\UrlHistoryInterface;
 use Enco\UrlHistory\Api\UrlHistoryRepositoryInterface;
+use Enco\UrlHistory\Model\UrlHistory as UrlHistoryModel;
 use Enco\UrlHistory\Model\UrlHistoryRepositoryFactory;
 use Magento\Framework\Api\Search\SearchCriteria;
+use Magento\Framework\Api\Search\SearchResult;
+use Magento\Framework\Api\Search\SearchResultFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
@@ -32,16 +35,24 @@ class UrlHistory implements ArgumentInterface
     protected $criteriaBuilder;
 
     /**
+     * @var SearchResultFactory
+     */
+    protected $searchResultFactory;
+
+    /**
      * UnregisteredUrlHistory constructor.
      * @param UrlHistoryRepositoryFactory $repositoryFactory
      * @param SearchCriteriaBuilder $criteriaBuilder
+     * @param SearchResultFactory $searchResultFactory
      */
     public function __construct(
         UrlHistoryRepositoryFactory $repositoryFactory,
-        SearchCriteriaBuilder $criteriaBuilder
+        SearchCriteriaBuilder $criteriaBuilder,
+        SearchResultFactory $searchResultFactory
     ) {
         $this->criteriaBuilder = $criteriaBuilder;
         $this->repositoryFactory = $repositoryFactory;
+        $this->searchResultFactory = $searchResultFactory;
     }
 
     /**
@@ -95,5 +106,39 @@ class UrlHistory implements ArgumentInterface
             )
             ->create();
         return $repository->getListWithCustomer($searchCriteria);
+    }
+
+    public function getUnregisteredUrlHistoryShort()
+    {
+        /**
+         * @var SearchResult $searchResult
+         */
+
+        $searchResult = $this->getUnregisteredUrlHistory();
+        $searchResultShort = $this->searchResultFactory->create();
+        $searchResultArrayUrls = [];
+        $searchResultArrayUrlsShort = [];
+
+        foreach ($searchResult->getItems() as $item) {
+            /**
+             * @var UrlHistoryModel $item
+             */
+            $url = $item->getVisitedUrl();
+            if (isset($searchResultArrayUrls[$url]) == false) {
+                $searchResultArrayUrls[$url] =
+                    [
+                        "item" => $item,
+                        "count" => 1
+                    ];
+            } else {
+                $searchResultArrayUrls[$url]["count"] = $searchResultArrayUrls[$url]["count"] + 1;
+            }
+        }
+        foreach ($searchResultArrayUrls as $item) {
+            $item["item"]->setVisitedUrl($item["item"]->getVisitedUrl() . " ({$item["count"]})");
+            $searchResultArrayUrlsShort[] = $item["item"];
+        }
+        $searchResultShort->setItems($searchResultArrayUrlsShort);
+        return $searchResultShort;
     }
 }
