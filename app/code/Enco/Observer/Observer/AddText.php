@@ -26,7 +26,7 @@ class AddText implements ObserverInterface
     {
         /**
          * My name
-         * @var name
+         * @var $name
          */
         $name = $observer->getData("name");
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Enco_AdminGrid::url_history" translate="title" title="Url History" sortOrder="20" >
+                    <resource id="Enco_AdminGrid::url_history_grid" translate="title" title="Url History Grid" sortOrder="10"/>
+                    <resource id="Enco_AdminGrid::url_history_edit" translate="title" title="Url History Edit" sortOrder="10"/>
+                    <resource id="Enco_AdminGrid::url_history_delete" translate="title" title="Url History Delete" sortOrder="10"/>
+                    <resource id="Enco_AdminGrid::url_history_save" translate="title" title="Url History Save" sortOrder="10"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

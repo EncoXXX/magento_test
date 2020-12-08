@@ -257,6 +257,8 @@ return [
         'Dotdigitalgroup_Email' => 1,
         'Dotdigitalgroup_Chat' => 1,
         'Enco_AdminBlock' => 1,
+        'Enco_AdminGrid' => 1,
+        'Enco_ContactUs' => 1,
         'Enco_Module' => 1,
         'Enco_Newsletter' => 1,
         'Enco_Observer' => 1,

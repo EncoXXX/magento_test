@@ -66,7 +66,7 @@ class LogUrlHistory implements ObserverInterface
          * @var string|null $name
          */
         $name = $this->customerSession->getCustomer()->getName();
-        if(trim($name) == ''){
+        if (trim($name) == '') {
             $name = null;
         }
 

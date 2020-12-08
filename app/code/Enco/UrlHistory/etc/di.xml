@@ -2,7 +2,7 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Enco\UrlHistory\Api\Data\UrlHistoryInterface"
-                type="Enco\UrlHistory\Model\CustomerVisitedUrls"/>
+                type="Enco\UrlHistory\Model\UrlHistory"/>
 
     <preference for="Enco\UrlHistory\Api\UrlHistoryRepositoryInterface"
                 type="Enco\UrlHistory\Model\UrlHistoryRepository"/>

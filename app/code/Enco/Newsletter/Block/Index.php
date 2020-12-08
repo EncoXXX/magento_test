@@ -7,7 +7,7 @@
  * @author Andriy Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Smile
  */
-namespace Enco\AdminBl\Block;
+namespace Enco\Newsletter\Block;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;

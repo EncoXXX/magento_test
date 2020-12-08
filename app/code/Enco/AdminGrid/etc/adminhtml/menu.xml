@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Enco_AdminGrid::url_history_menu"
+            title="U.H."
+            module="Enco_AdminGrid"
+            resource="Enco_AdminGrid::url_history"
+            translate="title toolTip"
+            toolTip="Url History"
+            sortOrder="25"/>
+        <add id="Enco_AdminGrid::url_history_menu_grid"
+            title="Grid"
+            module="Enco_AdminGrid"
+            resource="Enco_AdminGrid::url_history_grid"
+            translate="title"
+            parent="Enco_AdminGrid::url_history_menu"
+            action="admingrid/url/history"/>
+        <add id="Enco_AdminGrid::url_history_edit"
+            title="Edit"
+            module="Enco_AdminGrid"
+            resource="Enco_AdminGrid::url_history_edit"
+            translate="title"
+            parent="Enco_AdminGrid::url_history_menu"
+            action="admingrid/history/edit"/>
+    </menu>
+</config>
