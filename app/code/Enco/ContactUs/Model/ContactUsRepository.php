@@ -14,6 +14,7 @@ use Enco\ContactUs\Api\Data\ContactUsInterface;
 use Enco\ContactUs\Api\Data\ContactUsInterfaceFactory;
 use Enco\ContactUs\Model\ResourceModel\ContactUs as ResourceModel;
 use Enco\ContactUs\Model\ResourceModel\ContactUs\CollectionFactory;
+use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
@@ -105,6 +106,9 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      */
     public function getByCustomerId(int $id)
     {
+        /**
+         * @var SearchCriteria $searchCriteria
+         */
         $searchCriteria = $this->criteriaBuilder
             ->addFilter(
                 ContactUsInterface::CUSTOMER_ID,
@@ -122,6 +126,9 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      */
     public function getByEmail(string $email)
     {
+        /**
+         * @var SearchCriteria $searchCriteria
+         */
         $searchCriteria = $this->criteriaBuilder
             ->addFilter(
                 ContactUsInterface::EMAIL,
@@ -139,6 +146,9 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      */
     public function getByStatus(int $status)
     {
+        /**
+         * @var SearchCriteria $searchCriteria
+         */
         $searchCriteria = $this->criteriaBuilder
             ->addFilter(
                 ContactUsInterface::STATUS,
@@ -199,6 +209,9 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
+        /**
+         * @var ResourceModel\Collection $collection
+         */
         $collection = $this->collectionFactory->create();
         $this->processor->process($searchCriteria, $collection);
 
@@ -218,6 +231,9 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      */
     public function getWithReplied(int $messageId)
     {
+        /**
+         * @var ResourceModel\Collection $collection
+         */
         $collection = $this->collectionFactory->create();
         $collection->addFieldToFilter(
             [ContactUsInterface::ID, ContactUsInterface::REPLY_ID],

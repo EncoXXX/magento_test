@@ -81,7 +81,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * Returns status of request (use this interface statuses)
-     * @return string
+     * @return int
      */
     public function getStatus(): int
     {
@@ -214,11 +214,15 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     public function validateBeforeSave()
     {
         parent::validateBeforeSave();
-        if (count($this->getData()) == 2) {
-            if ($this->getStatus() !== null and is_int($this->getStatus()) == false) {
+
+        /**
+         * validate for edit form in admingrid (must update only status)
+         */
+        if (count($this->getData()) == 2 and $this->getStatus()!== null and $this->getId()!== null) {
+            if (is_int($this->getStatus()) == false) {
                 throw new LocalizedException(__('Status must be int'));
             }
-            if ($this->getId() !== null and is_int($this->getId())) {
+            if (is_int($this->getId())) {
                 throw new LocalizedException(__('Invalid ID'));
             }
             return $this;

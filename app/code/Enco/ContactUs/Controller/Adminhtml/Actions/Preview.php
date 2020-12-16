@@ -21,7 +21,11 @@ use Magento\Framework\View\Result\PageFactory;
  */
 class Preview extends AbstractAction
 {
+    /**#@+
+     * Name of ACL resource
+     */
     const VIEW_ACL_RESOURCE = 'Enco_ContactUs::contact_us_edit';
+    /**#@-**/
 
     /**
      * @var PageFactory $pageFactory

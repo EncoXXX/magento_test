@@ -13,7 +13,6 @@ use Enco\ContactUs\Api\ContactUsRepositoryInterface;
 use Enco\ContactUs\Api\Data\ContactUsInterface;
 use Enco\ContactUs\Model\ContactUs;
 use Magento\Backend\Block\Template;
-use Magento\Framework\DataObject;
 
 /**
  * Class Preview

@@ -26,7 +26,11 @@ use Magento\Framework\View\Result\PageFactory;
  */
 class Save extends AbstractAction
 {
+    /**#@+
+     * Name of ACL resource
+     */
     const SAVE_ACL_RESOURCE = 'Enco_ContactUs::contact_us_save';
+    /**#@-**/
 
     /**
      * Save constructor.

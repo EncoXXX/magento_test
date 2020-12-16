@@ -23,15 +23,17 @@ use Magento\Framework\Controller\ResultInterface;
  */
 class Delete extends AbstractAction
 {
-    /**
+    /**#@+
      * Name of ACL resource
      */
     const VIEW_ACL_RESOURCE = 'Enco_ContactUs::contact_us_delete';
+    /**#@-**/
 
     /**
      * @var ContactUsInterfaceFactory
      */
     protected $modelFactory;
+
     /**
      * @var ContactUsRepositoryInterface
      */

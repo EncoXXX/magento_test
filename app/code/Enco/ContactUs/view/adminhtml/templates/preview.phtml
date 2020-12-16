@@ -5,8 +5,13 @@
  */
 
 use Enco\ContactUs\Block\Adminhtml\Preview;
+use Enco\ContactUs\Model\ContactUs;
 
+/**
+ * @var ContactUs[] $messages
+ */
 $messages = $block->getModel();
+
 echo "<h1>" . $messages[$block->getMessageId()]->getTheme() . "</h1>";
 
 foreach ($messages as $message) {

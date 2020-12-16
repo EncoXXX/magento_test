@@ -12,6 +12,7 @@ namespace Enco\ContactUs\Controller\Adminhtml\Messages;
 use Magento\Backend\App\AbstractAction;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -20,10 +21,11 @@ use Magento\Framework\View\Result\PageFactory;
  */
 class Index extends AbstractAction implements HttpGetActionInterface
 {
-    /**
-     * Grid view acl resource
+    /**#@+
+     * Name of ACL resource
      */
     const GRID_VIEW_ACL_RESOURCE='Enco_ContactUs::contact_us_grid';
+    /**#@-**/
 
     /**
      * @var PageFactory
@@ -48,6 +50,9 @@ class Index extends AbstractAction implements HttpGetActionInterface
      */
     public function execute()
     {
+        /**
+         * @var Page $resultPage
+         */
         $resultPage = $this->resultPageFactory->create();
 
         $resultPage->setActiveMenu("Enco_ContactUs::contact_us_menu");

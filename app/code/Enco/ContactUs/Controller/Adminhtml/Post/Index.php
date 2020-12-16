@@ -21,15 +21,17 @@ use Magento\Framework\Controller\ResultInterface;
 
 class Index extends AbstractAction implements HttpPostActionInterface
 {
-    /**
-     * Grid view acl resource
+    /**#@+
+     * Name of ACL resource
      */
     const GRID_VIEW_ACL_RESOURCE='Enco_ContactUs::contact_us_edit';
+    /**#@-**/
 
     /**
      * @var ContactUsRepositoryInterface
      */
     protected $contactUsRepository;
+
     /**
      * @var ContactUsInterfaceFactory
      */
