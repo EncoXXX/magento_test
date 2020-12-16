@@ -70,7 +70,7 @@ interface ContactUsRepositoryInterface
 
     /**
      * Delete model
-     * @param ContactUs $model
+     * @param ContactUsInterface $model
      * @return mixed
      */
     public function delete(ContactUsInterface $model);

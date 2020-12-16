@@ -18,6 +18,7 @@ use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 
@@ -35,7 +36,7 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     protected $modelFactory;
 
     /**
-     * @var \Enco\ContactUs\Model\ResourceModel\ContactUs $resourceModel
+     * @var ResourceModel $resourceModel
      */
     protected $resourceModel;
 
@@ -172,15 +173,11 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      * Save model
      * @param ContactUsInterface $model
      * @return mixed|void
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
     public function save(ContactUsInterface $model)
     {
-        try {
-            $this->resourceModel->save($model);
-        } catch (\Exception $e) {
-            $this->messageManager->addErrorMessage($e->getMessage());
-            return null;
-        }
+        $this->resourceModel->save($model);
         return $model;
     }
 
@@ -188,13 +185,11 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      * Delete model
      * @param ContactUsInterface $model
      * @return mixed|void
+     * @throws \Exception
      */
     public function delete(ContactUsInterface $model)
     {
-        try {
-            $this->resourceModel->delete($model);
-        } catch (\Exception $e) {
-        }
+        $this->resourceModel->delete($model);
     }
 
     /**
@@ -213,5 +208,27 @@ class ContactUsRepository implements ContactUsRepositoryInterface
         $searchResult->setTotalCount($collection->getSize());
 
         return $searchResult;
+    }
+
+    /**
+     * Returns all replied messages with main message
+     * @param int $messageId
+     * @return DataObject[]
+     * @throws NoSuchEntityException
+     */
+    public function getWithReplied(int $messageId)
+    {
+        $collection = $this->collectionFactory->create();
+        $collection->addFieldToFilter(
+            [ContactUsInterface::ID, ContactUsInterface::REPLY_ID],
+            [$messageId, $messageId]
+        );
+
+        $model = $collection->getItems();
+
+        if (count($model)<1) {
+            throw new NoSuchEntityException(__("No items("));
+        }
+        return $model;
     }
 }

@@ -1,14 +1,27 @@
 <?php
-
-namespace Enco\AdminGrid\Controller\Adminhtml\History;
+/**
+ * Add action for Contact Us admin page
+ * @category Smile
+ * @package Enco\ContactUs
+ * @author Andriy Bednarskiy <bednarsasha@gmail.com>
+ * @copyright 2020 Smile
+ */
+namespace Enco\ContactUs\Controller\Adminhtml\Actions;
 
 use Magento\Backend\App\AbstractAction;
 use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 
+/**
+ * Class Add
+ * @package Enco\ContactUs\Controller\Adminhtml\Actions
+ */
 class Add extends AbstractAction
 {
-    const VIEW_ACL_RESOURCE = 'Enco_AdminGrid::contact_us_edit';
+    /**
+     * Name of ACL resource
+     */
+    const VIEW_ACL_RESOURCE = 'Enco_ContactUs::contact_us_edit';
 
     protected $pageFactory;
 
@@ -24,13 +37,17 @@ class Add extends AbstractAction
     }
 
     /**
-     * Execute method for action add (forward to edit)
+     * Execute method (forward to edit)
      */
     public function execute()
     {
         $this->_forward('edit');
     }
 
+    /**
+     * Check if user is allowed to execute this action
+     * @return bool
+     */
     protected function _isAllowed()
     {
         return $this->_authorization->isAllowed(static::VIEW_ACL_RESOURCE);

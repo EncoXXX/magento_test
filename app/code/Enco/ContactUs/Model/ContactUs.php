@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * ContactUs model
+ * @category Smile
+ * @package Enco\ContactUs
+ * @author Andriy Bednarskiy <bednarsasha@gmail.com>
+ * @copyright 2020 Smile
+ */
 namespace Enco\ContactUs\Model;
 
 use Enco\ContactUs\Api\Data\ContactUsInterface;
@@ -208,6 +214,16 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     public function validateBeforeSave()
     {
         parent::validateBeforeSave();
+        if (count($this->getData()) == 2) {
+            if ($this->getStatus() !== null and is_int($this->getStatus()) == false) {
+                throw new LocalizedException(__('Status must be int'));
+            }
+            if ($this->getId() !== null and is_int($this->getId())) {
+                throw new LocalizedException(__('Invalid ID'));
+            }
+            return $this;
+        }
+
         if ($this->getCustomerName() === '') {
             throw new LocalizedException(__('Enter the Name and try again.'));
         }
@@ -217,7 +233,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
         if (trim($this->getTheme()) === '') {
             throw new LocalizedException(__('Enter the theme and try again.'));
         }
-        if (false === \strpos($this->getEmail(), '@')) {
+        if (trim($this->getEmail()) !=='' and false === \strpos($this->getEmail(), '@')) {
             throw new LocalizedException(__('The email address is invalid. Verify the email address and try again.'));
         }
         if ($this->getCustomerId() === 0) {
@@ -230,15 +246,14 @@ class ContactUs extends AbstractModel implements ContactUsInterface
             throw new LocalizedException(__('Status must be int'));
         }
         if ($this->getPhone() !== false) {
-            $allowed_chars = ['+','0','1','2','3','4','5','6','7','8','9','(',')','-'];
+            $allowedChars = ['+','0','1','2','3','4','5','6','7','8','9','(',')','-'];
             $phone = $this->getPhone();
             $phone = str_replace(" ", "", $phone);
-
             if (strlen($phone)<8 or strlen($phone)>15) {
                 throw new LocalizedException(__('Invalid phone'));
             }
             for ($i = 0; $i < strlen($phone); $i++) {
-                if (in_array($phone[$i], $allowed_chars) == false) {
+                if (in_array($phone[$i], $allowedChars) == false) {
                     throw new LocalizedException(__('Invalid phone'));
                 }
             }

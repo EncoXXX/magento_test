@@ -53,11 +53,9 @@ $helper = $this->helper(Enco\ContactUs\Helper\Data::class);
                 <textarea name="comment" id="comment" title="<?= $block->escapeHtmlAttr(__('What’s on your mind?')) ?>" class="input-text" cols="5" rows="3" data-validate="{required:true}"><?= $block->escapeHtml($helper->getComment()) ?></textarea>
             </div>
         </div>
-        <?= $block->getChildHtml('form.additional.info') ?>
     </fieldset>
     <div class="actions-toolbar">
         <div class="primary">
-            <input type="hidden" name="hideit" id="hideit" value="" />
             <button type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="action submit primary">
                 <span><?= $block->escapeHtml(__('Submit')) ?></span>
             </button>

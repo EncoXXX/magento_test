@@ -8,6 +8,7 @@
  */
 
 namespace Enco\ContactUs\Block;
+
 use Magento\Framework\View\Element\Template;
 
 /**
@@ -26,7 +27,12 @@ class ContactForm extends Template
         parent::__construct($context, $data);
     }
 
-    public function getFormAction(){
+    /**
+     * Returns url for contact form action
+     * @return string
+     */
+    public function getFormAction()
+    {
         return $this->getUrl('contact/index/post', ['_secure' => true]);
     }
 }

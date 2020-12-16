@@ -1,28 +1,29 @@
 <?php
 /**
- * Data provider for AdminGrid form
+ * Data provider for ContactUs form
  *
  * @category Smile
- *
+ * @package Enco\ContactUs
+ * @author Andriy Bednarskiy <bednarsasha@gmail.com>
+ * @copyright 2020 Smile
  */
 
-namespace Enco\AdminGrid\Ui\DataProvider\Form;
+namespace Enco\ContactUs\Ui\DataProvider\Form;
 
-use Enco\UrlHistory\Model\ResourceModel\UrlHistory\CollectionFactory as UrlHistoryCollectionFactory;
+use Enco\ContactUs\Model\ResourceModel\ContactUs\CollectionFactory as ContactUsCollectionFactory;
 use Magento\Framework\App\RequestInterface;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 
+/**
+ * Class DataProvider for ContactUs form
+ * @package Enco\ContactUs\Ui\DataProvider\Form
+ */
 class DataProvider extends AbstractDataProvider
 {
     /**
      * @var array
      */
     protected $_loadedData = [];
-
-    /**
-     * @var UrlHistoryCollectionFactory $urlHistoryCollectionFactory
-     */
-    protected $urlHistoryCollectionFactory;
 
     /**
      * @var RequestInterface $request
@@ -33,7 +34,7 @@ class DataProvider extends AbstractDataProvider
      * DataProvider constructor.
      * @param string $name
      * @param string $primaryFieldName
-     * @param UrlHistoryCollectionFactory $urlHistoryCollectionFactory
+     * @param ContactUsCollectionFactory $contactUsCollectionFactory
      * @param RequestInterface $request
      * @param string $requestFieldName
      * @param array $meta
@@ -42,18 +43,22 @@ class DataProvider extends AbstractDataProvider
     public function __construct(
         string $name,
         string $primaryFieldName,
-        UrlHistoryCollectionFactory $urlHistoryCollectionFactory,
+        ContactUsCollectionFactory $contactUsCollectionFactory,
         RequestInterface $request,
         string $requestFieldName,
         array $meta = [],
         array $data = []
     ) {
         $this->request=$request;
-        $this->collection=$urlHistoryCollectionFactory->create();
+        $this->collection=$contactUsCollectionFactory->create();
 
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }
 
+    /**
+     * Returns loaded data in ContactUs form
+     * @return array
+     */
     public function getData()
     {
         if (!empty($this->_loadedData)) {

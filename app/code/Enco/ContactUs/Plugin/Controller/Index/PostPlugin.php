@@ -13,7 +13,6 @@ namespace Enco\ContactUs\Plugin\Controller\Index;
 use Enco\ContactUs\Api\ContactUsRepositoryInterface;
 use Enco\ContactUs\Api\Data\ContactUsInterface;
 use Enco\ContactUs\Model\ContactUsFactory;
-use Exception;
 use Magento\Contact\Controller\Index\Post as OverrideObject;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
@@ -106,12 +105,13 @@ class PostPlugin
             ->setPhone($request->getParam('telephone') ?: null)
             ->setStatus($model::NEW_MESSAGE_STATUS);
 
-        $answer = $this->repository->save($model);
-
-        if ($answer !== null) {
+        try {
+            $this->repository->save($model);
             $this->messageManager->addSuccessMessage(
                 __('Thanks for contacting us with your comments and questions. We\'ll respond to you very soon.')
             );
+        } catch (\Exception $e) {
+            $this->messageManager->addErrorMessage($e->getMessage());
         }
 
         $this->dataPersistor->set(self::DATA_PERSISTOR_ID, $this->request->getParams());

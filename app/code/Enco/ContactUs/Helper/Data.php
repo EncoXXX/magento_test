@@ -9,8 +9,7 @@
 
 namespace Enco\ContactUs\Helper;
 
-use Enco\ContactUs\Contorller\Index\Post;
-use Enco\ContactUs\Contorller\Index\Post as PostAction;
+use Enco\ContactUs\Plugin\Controller\Index\PostPlugin ;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -50,9 +49,9 @@ class Data extends AbstractHelper
     private function getDataPersistor()
     {
         if ($this->dataLoaded == false) {
-            $this->persistorData = $this->dataPersistor->get(PostAction::DATA_PERSISTOR_ID);
+            $this->persistorData = $this->dataPersistor->get(PostPlugin::DATA_PERSISTOR_ID);
             $this->dataLoaded = true;
-            $this->dataPersistor->clear(Post::DATA_PERSISTOR_ID);
+            $this->dataPersistor->clear(PostPlugin::DATA_PERSISTOR_ID);
         }
         return $this->persistorData;
     }
