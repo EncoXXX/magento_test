@@ -65,6 +65,6 @@ class Preview extends Template
      */
     public function getFormAction()
     {
-        return $this->getUrl('contact/post/index', ['_secure' => true]);
+        return $this->getUrl('contact/post/index');
     }
 }

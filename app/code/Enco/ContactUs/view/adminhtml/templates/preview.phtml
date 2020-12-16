@@ -29,7 +29,6 @@ foreach ($messages as $message) {
       id="contact-form"
       method="post"
       data-hasrequired="<?= __('* Required Fields') ?>"
-      data-mage-init='{"validation":{}}'>
     <fieldset class="fieldset">
         <input name="theme" id="theme" type="hidden" value="<?= $messages[$block->getMessageId()]->getTheme() ?>" />
         <input name="reply_id" id="reply_id" type="hidden" value="<?= $block->getMessageId() ?>" />
@@ -39,6 +38,7 @@ foreach ($messages as $message) {
                 <textarea name="comment" id="comment" title="<?= $block->escapeHtml(__('Answer')) ?>" class="input-text" cols="50" rows="1" data-validate="{required:true}"></textarea>
             </div>
         </div>
+        <input name="form_key" type="hidden" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>" />
     </fieldset>
     <div class="actions-toolbar">
         <div class="primary">

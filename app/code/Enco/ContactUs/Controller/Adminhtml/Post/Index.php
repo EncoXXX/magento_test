@@ -15,12 +15,16 @@ use Enco\ContactUs\Api\Data\ContactUsInterfaceFactory;
 use Exception;
 use Magento\Backend\App\AbstractAction;
 use Magento\Backend\App\Action;
-use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 
-class Index extends AbstractAction implements HttpGetActionInterface
+class Index extends AbstractAction implements HttpPostActionInterface
 {
+    /**
+     * Grid view acl resource
+     */
+    const GRID_VIEW_ACL_RESOURCE='Enco_ContactUs::contact_us_edit';
 
     /**
      * @var ContactUsRepositoryInterface
@@ -42,9 +46,9 @@ class Index extends AbstractAction implements HttpGetActionInterface
         ContactUsInterfaceFactory $contactUsInterfaceFactory,
         Action\Context $context
     ) {
-        parent::__construct($context);
         $this->contactUsRepository = $contactUsRepository;
         $this->contactUsInterfaceFactory = $contactUsInterfaceFactory;
+        parent::__construct($context);
     }
 
     /**
@@ -53,6 +57,9 @@ class Index extends AbstractAction implements HttpGetActionInterface
      */
     public function execute()
     {
+        /**
+         * @var ContactUsInterface $model
+         */
         $model = $this->contactUsInterfaceFactory->create();
         $model
             ->setStatus(ContactUsInterface::REPLIED_STATUS)
@@ -64,6 +71,10 @@ class Index extends AbstractAction implements HttpGetActionInterface
             ->setTheme($this->_request->getParam("theme"))
             ->setMessage($this->_request->getParam("comment"));
 
+        /**
+         * Uses to update message status
+         * @var ContactUsInterface $oldMessageModel
+         */
         $oldMessageModel = $this->contactUsInterfaceFactory->create();
         $oldMessageModel->setId($this->_request->getParam("reply_id"));
         $oldMessageModel->setStatus(ContactUsInterface::REPLIED_STATUS);
@@ -75,6 +86,15 @@ class Index extends AbstractAction implements HttpGetActionInterface
         } catch (Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
-        return $this->resultRedirectFactory->create()->setPath("contact/actions/preview");
+        return $this->_redirect("contact/actions/preview/id/" . $oldMessageModel->getId());
+    }
+
+    /**
+     * Check if user is allowed to execute this action
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed(static::GRID_VIEW_ACL_RESOURCE);
     }
 }

@@ -29,7 +29,12 @@ use Magento\Framework\Message\ManagerInterface;
  */
 class PostPlugin
 {
+    /**#@+
+     * Id of DataPersistor to save data
+     */
     const DATA_PERSISTOR_ID = 'contact_us';
+    /**@#-**/
+
     /**
      * @var DataPersistorInterface
      */
@@ -91,6 +96,9 @@ class PostPlugin
      */
     public function aroundExecute(OverrideObject $object, callable $proceed)
     {
+        /**
+         * @var RequestInterface $request
+         */
         $request = $this->request;
         /**
          * @var ContactUsInterface $model
