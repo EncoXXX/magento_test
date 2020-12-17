@@ -14,10 +14,12 @@ use Enco\ContactUs\Api\Data\ContactUsInterface;
 use Enco\ContactUs\Api\Data\ContactUsInterfaceFactory;
 use Enco\ContactUs\Model\ResourceModel\ContactUs as ResourceModel;
 use Enco\ContactUs\Model\ResourceModel\ContactUs\CollectionFactory;
+use Exception;
 use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -82,7 +84,8 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     /**
      * Get model by request id
      * @param int $id
-     * @return mixed|void
+     *
+     * @return ContactUsInterface
      * @throws NoSuchEntityException
      */
     public function getById(int $id)
@@ -102,7 +105,9 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     /**
      * Get request collection by customer id
      * @param int $id
-     * @return mixed
+     *
+     * @return SearchResultsInterface
+     * @throws NoSuchEntityException
      */
     public function getByCustomerId(int $id)
     {
@@ -122,7 +127,9 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     /**
      * Get request collection by customer email
      * @param string $email
-     * @return mixed|void
+     *
+     * @return SearchResultsInterface
+     * @throws NoSuchEntityException
      */
     public function getByEmail(string $email)
     {
@@ -142,7 +149,9 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     /**
      * Get request collection by status
      * @param int $status
-     * @return mixed|void
+     *
+     * @return SearchResultsInterface
+     * @throws NoSuchEntityException
      */
     public function getByStatus(int $status)
     {
@@ -162,7 +171,8 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     /**
      * Get replied messages collection by request message id
      * @param int $message_id
-     * @return mixed|void
+     *
+     * @return ContactUsInterface
      * @throws NoSuchEntityException
      */
     public function getRepliedMessageById(int $message_id)
@@ -182,7 +192,8 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     /**
      * Save model
      * @param ContactUsInterface $model
-     * @return mixed|void
+     *
+     * @return ContactUsInterface
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
     public function save(ContactUsInterface $model)
@@ -194,8 +205,9 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     /**
      * Delete model
      * @param ContactUsInterface $model
-     * @return mixed|void
-     * @throws \Exception
+     *
+     * @return void
+     * @throws Exception
      */
     public function delete(ContactUsInterface $model)
     {
@@ -205,7 +217,9 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     /**
      * Returns collection by search criteria
      * @param SearchCriteriaInterface $searchCriteria
-     * @return mixed
+     *
+     * @return SearchResultsInterface
+     * @throws NoSuchEntityException
      */
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
@@ -219,13 +233,16 @@ class ContactUsRepository implements ContactUsRepositoryInterface
         $searchResult->setSearchCriteria($searchCriteria);
         $searchResult->setItems($collection->getItems());
         $searchResult->setTotalCount($collection->getSize());
-
+        if ($collection->getSize() == 0) {
+            throw new NoSuchEntityException(__("No entity with this params"));
+        }
         return $searchResult;
     }
 
     /**
      * Returns all replied messages with main message
      * @param int $messageId
+     *
      * @return DataObject[]
      * @throws NoSuchEntityException
      */

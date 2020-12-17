@@ -57,6 +57,7 @@ class DataProvider extends AbstractDataProvider
 
     /**
      * Returns loaded data in ContactUs form
+     *
      * @return array
      */
     public function getData()

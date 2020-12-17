@@ -9,7 +9,7 @@
 
 namespace Enco\ContactUs\Helper;
 
-use Enco\ContactUs\Plugin\Controller\Index\PostPlugin ;
+use Enco\ContactUs\Plugin\Controller\Index\PostPlugin;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -44,6 +44,7 @@ class Data extends AbstractHelper
 
     /**
      * Returns data persistor or null
+     *
      * @return array
      */
     private function getDataPersistor()
@@ -74,11 +75,12 @@ class Data extends AbstractHelper
 
     /**
      * Returns customer name from form or from customer session
+     *
      * @return string
      */
     public function getCustomerName()
     {
-        if (isset($this->getDataPersistor()['name']) and trim($this->getDataPersistor()['name']) != '') {
+        if (isset($this->getDataPersistor()['name']) && trim($this->getDataPersistor()['name']) != '') {
             return $this->getDataPersistor()['name'];
         }
         if ($this->customerSession->isLoggedIn()) {
@@ -93,7 +95,7 @@ class Data extends AbstractHelper
      */
     public function getCustomerEmail()
     {
-        if (isset($this->getDataPersistor()['email']) and trim($this->getDataPersistor()['email']) != '') {
+        if (isset($this->getDataPersistor()['email']) && trim($this->getDataPersistor()['email']) != '') {
             return $this->getDataPersistor()['email'];
         }
         if ($this->customerSession->isLoggedIn()) {
@@ -104,11 +106,12 @@ class Data extends AbstractHelper
 
     /**
      * Returns customer phone from form
+     *
      * @return string
      */
     public function getCustomerPhone()
     {
-        if (isset($this->getDataPersistor()['telephone']) and trim($this->getDataPersistor()['telephone'])) {
+        if (isset($this->getDataPersistor()['telephone']) && trim($this->getDataPersistor()['telephone'])) {
             return $this->getDataPersistor()['telephone'];
         }
 
@@ -117,11 +120,12 @@ class Data extends AbstractHelper
 
     /**
      * Returns theme from form
+     *
      * @return string
      */
     public function getTheme()
     {
-        if (isset($this->getDataPersistor()['theme']) and trim($this->getDataPersistor()['theme'])) {
+        if (isset($this->getDataPersistor()['theme']) && trim($this->getDataPersistor()['theme'])) {
             return $this->getDataPersistor()['theme'];
         }
 
@@ -130,11 +134,12 @@ class Data extends AbstractHelper
 
     /**
      * Returns comment from form
+     *
      * @return string
      */
     public function getComment()
     {
-        if (isset($this->getDataPersistor()['comment']) and trim($this->getDataPersistor()['comment'])) {
+        if (isset($this->getDataPersistor()['comment']) && trim($this->getDataPersistor()['comment'])) {
             return $this->getDataPersistor()['comment'];
         }
 

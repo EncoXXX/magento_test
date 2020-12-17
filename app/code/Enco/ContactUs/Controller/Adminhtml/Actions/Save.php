@@ -66,6 +66,7 @@ class Save extends AbstractAction
 
     /**
      * Execute method for save action
+     *
      * @return ResponseInterface|ResultInterface
      */
     public function execute()
@@ -98,6 +99,7 @@ class Save extends AbstractAction
 
     /**
      * Check if user is allowed to execute this action
+     *
      * @return bool
      */
     protected function _isAllowed()

@@ -12,6 +12,7 @@ namespace Enco\ContactUs\Api;
 use Enco\ContactUs\Api\Data\ContactUsInterface;
 use Enco\ContactUs\Model\ContactUs;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResultsInterface;
 
 /**
  * Interface ContactUsRepositoryInterface
@@ -22,41 +23,46 @@ interface ContactUsRepositoryInterface
     /**
      * Get model by request id
      * @param int $id
-     * @return mixed
+     *
+     * @return ContactUsInterface
      */
     public function getById(int $id);
 
     /**
      * Get request collection by customer id
      * @param int $id
-     * @return mixed
+     *
+     * @return SearchResultsInterface
      */
     public function getByCustomerId(int $id);
 
     /**
      * Get request collection by customer email
      * @param string $email
-     * @return mixed
+     * @return SearchResultsInterface
      */
     public function getByEmail(string $email);
 
     /**
      * Get request collection by status
      * @param int $status
-     * @return mixed
+     *
+     * @return SearchResultsInterface
      */
     public function getByStatus(int $status);
 
     /**
      * Get replied messages collection by request message id
      * @param int $message_id
-     * @return mixed
+     *
+     * @return ContactUsInterface
      */
     public function getRepliedMessageById(int $message_id);
 
     /**
      * Returns collection by search criteria
      * @param SearchCriteriaInterface $searchCriteria
+     *
      * @return mixed
      */
     public function getList(SearchCriteriaInterface $searchCriteria);
@@ -64,14 +70,16 @@ interface ContactUsRepositoryInterface
     /**
      * Save model
      * @param ContactUsInterface $model
-     * @return mixed
+     *
+     * @return ContactUsInterface
      */
     public function save(ContactUsInterface $model);
 
     /**
      * Delete model
      * @param ContactUsInterface $model
-     * @return mixed
+     *
+     * @return void
      */
     public function delete(ContactUsInterface $model);
 }

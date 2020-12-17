@@ -55,6 +55,7 @@ class Index extends AbstractAction implements HttpPostActionInterface
 
     /**
      * Execute method to save model
+     *
      * @return ResponseInterface|ResultInterface|void
      */
     public function execute()
@@ -93,6 +94,7 @@ class Index extends AbstractAction implements HttpPostActionInterface
 
     /**
      * Check if user is allowed to execute this action
+     *
      * @return bool
      */
     protected function _isAllowed()

@@ -50,6 +50,7 @@ class Add extends AbstractAction
 
     /**
      * Check if user is allowed to execute this action
+     *
      * @return bool
      */
     protected function _isAllowed()

@@ -27,6 +27,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * Returns customer id if exist
+     *
      * @return int|null
      */
     public function getCustomerId(): ?int
@@ -36,6 +37,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * returns customer name from form
+     *
      * @return string
      */
     public function getCustomerName(): string
@@ -45,6 +47,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * Returns theme of request
+     *
      * @return string
      */
     public function getTheme(): string
@@ -54,6 +57,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * Returns message of request
+     *
      * @return string
      */
     public function getMessage(): string
@@ -63,6 +67,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * returns customer email from form
+     *
      * @return string
      */
     public function getEmail(): string
@@ -72,6 +77,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * Returns id of replied message
+     *
      * @return int|null
      */
     public function getReplyId(): ?int
@@ -81,6 +87,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * Returns status of request (use this interface statuses)
+     *
      * @return int
      */
     public function getStatus(): int
@@ -90,6 +97,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * Returns when was created request
+     *
      * @return string
      */
     public function getCreatedAt(): string
@@ -99,6 +107,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * Returns true if message was written by admin
+     *
      * @return bool
      */
     public function isAdmin(): bool
@@ -108,6 +117,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * Returns customer phone
+     *
      * @return string
      */
     public function getPhone(): ?string
@@ -118,6 +128,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     /**
      * Set Customer id (not required)
      * @param int|null $id
+     *
      * @return ContactUsInterface
      */
     public function setCustomerId(?int $id): ContactUsInterface
@@ -128,6 +139,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     /**
      * Set Customer name
      * @param string $name
+     *
      * @return ContactUsInterface
      */
     public function setCustomerName(string $name): ContactUsInterface
@@ -138,6 +150,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     /**
      * Set theme of request
      * @param string $theme
+     *
      * @return ContactUsInterface
      */
     public function setTheme(string $theme): ContactUsInterface
@@ -148,6 +161,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     /**
      * Set message of request
      * @param string $message
+     *
      * @return ContactUsInterface
      */
     public function setMessage(string $message): ContactUsInterface
@@ -158,6 +172,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     /**
      * Set customer email (not required if admin)
      * @param string|null $email
+     *
      * @return ContactUsInterface
      */
     public function setEmail(?string $email): ContactUsInterface
@@ -168,6 +183,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     /**
      * Set reply message id(not required if message is not reply)
      * @param int $replyId
+     *
      * @return ContactUsInterface
      */
     public function setReplyId(int $replyId): ContactUsInterface
@@ -178,6 +194,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     /**
      * Set status of request (by default - self::NEW_MESSAGE_STATUS)
      * @param int $status
+     *
      * @return ContactUsInterface
      */
     public function setStatus(int $status): ContactUsInterface
@@ -188,6 +205,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     /**
      * Set admin reply or request(not required, by default: false)
      * @param bool $isAdmin
+     *
      * @return ContactUsInterface
      */
     public function setIsAdmin(bool $isAdmin): ContactUsInterface
@@ -198,6 +216,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     /**
      * Set customer phone (not required)
      * @param string $phone
+     *
      * @return ContactUsInterface
      */
     public function setPhone(string $phone): ContactUsInterface
@@ -207,6 +226,7 @@ class ContactUs extends AbstractModel implements ContactUsInterface
 
     /**
      * Validate before save (calls automatically)
+     *
      * @return ContactUs
      * @throws LocalizedException
      * @throws Exception
@@ -214,46 +234,48 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     public function validateBeforeSave()
     {
         parent::validateBeforeSave();
+        $valid = new \Zend_Validate_NotEmpty();
 
         /**
          * validate for edit form in admingrid (must update only status)
          */
-        if (count($this->getData()) == 2 and $this->getStatus()!== null and $this->getId()!== null) {
+        if (count($this->getData()) == 2 && $this->getStatus()!== null && $this->getId()!== null) {
             if (is_int($this->getStatus()) == false) {
                 throw new LocalizedException(__('Status must be int'));
             }
-            if (is_int($this->getId())) {
+            if (is_int($this->getId()) == false) {
                 throw new LocalizedException(__('Invalid ID'));
             }
             return $this;
         }
 
-        if ($this->getCustomerName() === '') {
+        if (!$valid->isValid($this->getCustomerName())) {
             throw new LocalizedException(__('Enter the Name and try again.'));
         }
-        if (trim($this->getMessage()) === '') {
+        if (!$valid->isValid($this->getMessage())) {
             throw new LocalizedException(__('Enter the message and try again.'));
         }
         if (trim($this->getTheme()) === '') {
             throw new LocalizedException(__('Enter the theme and try again.'));
         }
-        if (trim($this->getEmail()) !=='' and false === \strpos($this->getEmail(), '@')) {
+
+        if (!$valid->isValid($this->getEmail())  && false === \strpos($this->getEmail(), '@')) {
             throw new LocalizedException(__('The email address is invalid. Verify the email address and try again.'));
         }
-        if ($this->getCustomerId() === 0) {
+        if (!$valid->isValid($this->getCustomerId())) {
             throw new LocalizedException(__('Customer id can\'t be 0'));
         }
-        if ($this->getReplyId() === 0) {
+        if (!$valid->isValid($this->getReplyId())) {
             throw new LocalizedException(__('Reply id can\'t be 0'));
         }
-        if ($this->getStatus() !== null and is_int($this->getStatus()) == false) {
+        if ($this->getStatus() !== null && is_int($this->getStatus()) == false) {
             throw new LocalizedException(__('Status must be int'));
         }
-        if ($this->getPhone() !== false) {
+        if (!$valid->isValid($this->getPhone())) {
             $allowedChars = ['+','0','1','2','3','4','5','6','7','8','9','(',')','-'];
             $phone = $this->getPhone();
             $phone = str_replace(" ", "", $phone);
-            if (strlen($phone)<8 or strlen($phone)>15) {
+            if (strlen($phone)<8 || strlen($phone)>15) {
                 throw new LocalizedException(__('Invalid phone'));
             }
             for ($i = 0; $i < strlen($phone); $i++) {

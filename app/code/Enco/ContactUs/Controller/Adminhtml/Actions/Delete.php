@@ -57,6 +57,7 @@ class Delete extends AbstractAction
 
     /**
      * Execute method for delete action
+     *
      * @return ResponseInterface|ResultInterface
      */
     public function execute()
@@ -78,6 +79,7 @@ class Delete extends AbstractAction
 
     /**
      * Check if user is allowed to execute this action
+     *
      * @return bool
      */
     protected function _isAllowed()

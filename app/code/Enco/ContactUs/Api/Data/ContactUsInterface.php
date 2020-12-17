@@ -49,60 +49,70 @@ interface ContactUsInterface
 
     /**
      * Returns customer id if exist
+     *
      * @return int|null
      */
     public function getCustomerId():?int;
 
     /**
      * returns customer name from form
+     *
      * @return string
      */
     public function getCustomerName():string;
 
     /**
      * Returns theme of request
+     *
      * @return string
      */
     public function getTheme():string;
 
     /**
      * Returns message of request
+     *
      * @return string
      */
     public function getMessage():string;
 
     /**
      * returns customer email from form
+     *
      * @return string
      */
     public function getEmail():string;
 
     /**
      * Returns id of replied message
+     *
      * @return int|null
      */
     public function getReplyId():?int;
 
     /**
      * Returns status of request (use this interface statuses)
+     *
      * @return int
      */
     public function getStatus():int;
 
     /**
      * Returns when was created request
+     *
      * @return string
      */
     public function getCreatedAt():string;
 
     /**
      * Returns true if message was written by admin
+     *
      * @return bool
      */
     public function isAdmin():bool;
 
     /**
      * Returns customer phone
+     *
      * @return string
      */
     public function getPhone():?string;
@@ -110,6 +120,7 @@ interface ContactUsInterface
     /**
      * Set Customer id (not required)
      * @param int $id
+     *
      * @return $this
      */
     public function setCustomerId(int $id) : self;
@@ -117,6 +128,7 @@ interface ContactUsInterface
     /**
      * Set Customer name
      * @param string $name
+     *
      * @return $this
      */
     public function setCustomerName(string $name): self;
@@ -124,6 +136,7 @@ interface ContactUsInterface
     /**
      * Set theme of request
      * @param string $theme
+     *
      * @return $this
      */
     public function setTheme(string $theme) : self;
@@ -131,6 +144,7 @@ interface ContactUsInterface
     /**
      * Set message of request
      * @param string $message
+     *
      * @return $this
      */
     public function setMessage(string $message) : self;
@@ -138,6 +152,7 @@ interface ContactUsInterface
     /**
      * Set customer email (not required if admin)
      * @param string|null $email
+     *
      * @return $this
      */
     public function setEmail(?string $email) : self;
@@ -145,6 +160,7 @@ interface ContactUsInterface
     /**
      * Set reply message id(not required if message is not reply)
      * @param int $replyId
+     *
      * @return $this
      */
     public function setReplyId(int $replyId) : self;
@@ -152,6 +168,7 @@ interface ContactUsInterface
     /**
      * Set status of request (by default - self::NEW_MESSAGE_STATUS)
      * @param int $status
+     *
      * @return $this
      */
     public function setStatus(int $status) : self;
@@ -159,6 +176,7 @@ interface ContactUsInterface
     /**
      * Set admin reply or request(not required, by default: false)
      * @param bool $isAdmin
+     *
      * @return $this
      */
     public function setIsAdmin(bool $isAdmin) : self;
@@ -166,6 +184,7 @@ interface ContactUsInterface
     /**
      * Set customer phone (not required)
      * @param string $phone
+     *
      * @return $this
      */
     public function setPhone(string $phone) : self;

@@ -59,6 +59,7 @@ class ContactUs extends DataProvider
 
     /**
      * Returns data to admingrid
+     *
      * @return array
      */
     public function getData()

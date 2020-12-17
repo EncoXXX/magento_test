@@ -91,8 +91,8 @@ class PostPlugin
      * Override execute method of OverrideObject
      * @param OverrideObject $object
      * @param callable $proceed
+     *
      * @return Redirect
-     * @throws LocalizedException
      */
     public function aroundExecute(OverrideObject $object, callable $proceed)
     {

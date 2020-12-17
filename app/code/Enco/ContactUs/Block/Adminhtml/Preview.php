@@ -42,6 +42,7 @@ class Preview extends Template
 
     /**
      * Returns all replied messages with main message
+     *
      * @return ContactUs[]
      */
     public function getModel()
@@ -51,6 +52,7 @@ class Preview extends Template
 
     /**
      * Returns message id
+     *
      * @return int
      */
     public function getMessageId()
@@ -60,6 +62,7 @@ class Preview extends Template
 
     /**
      * Returns url for preview form action
+     *
      * @return string
      */
     public function getFormAction()

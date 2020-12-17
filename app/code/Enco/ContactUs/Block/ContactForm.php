@@ -29,6 +29,7 @@ class ContactForm extends Template
 
     /**
      * Returns url for contact form action
+     *
      * @return string
      */
     public function getFormAction()

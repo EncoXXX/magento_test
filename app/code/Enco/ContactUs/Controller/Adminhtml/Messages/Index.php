@@ -47,6 +47,8 @@ class Index extends AbstractAction implements HttpGetActionInterface
 
     /**
      * Execute method
+     *
+     * @return Page
      */
     public function execute()
     {
@@ -62,6 +64,7 @@ class Index extends AbstractAction implements HttpGetActionInterface
 
     /**
      * Check if user is allowed to execute this action
+     *
      * @return bool
      */
     protected function _isAllowed()

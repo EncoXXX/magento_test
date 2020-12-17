@@ -21,6 +21,7 @@ class BackButton extends GenericButton implements ButtonProviderInterface
 {
     /**
      * Returns data fot back button
+     *
      * @return array
      */
     public function getButtonData()
@@ -35,6 +36,7 @@ class BackButton extends GenericButton implements ButtonProviderInterface
 
     /**
      * Get URL for back button
+     *
      * @return string
      */
     public function getBackUrl()

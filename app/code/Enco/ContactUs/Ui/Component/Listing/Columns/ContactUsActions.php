@@ -47,6 +47,7 @@ class ContactUsActions extends Column
     /**
      * Prepare Data Source (action column component)
      * @param array $dataSource
+     *
      * @return array
      */
     public function prepareDataSource(array $dataSource)

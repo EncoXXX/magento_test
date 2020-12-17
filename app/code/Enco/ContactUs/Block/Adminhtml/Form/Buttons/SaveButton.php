@@ -19,6 +19,7 @@ class SaveButton implements ButtonProviderInterface
 
     /**
      * Get Save button data
+     *
      * @return array
      */
     public function getButtonData()

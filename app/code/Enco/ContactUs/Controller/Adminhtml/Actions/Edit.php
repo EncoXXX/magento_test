@@ -45,6 +45,7 @@ class Edit extends AbstractAction
 
     /**
      * Execute method for edit action
+     *
      * @return ResponseInterface|ResultInterface|Page
      */
     public function execute()
@@ -56,6 +57,7 @@ class Edit extends AbstractAction
 
     /**
      * Check if user is allowed to execute this action
+     *
      * @return bool
      */
     protected function _isAllowed()
