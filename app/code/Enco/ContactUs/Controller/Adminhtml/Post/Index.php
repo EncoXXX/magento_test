@@ -65,31 +65,18 @@ class Index extends AbstractAction implements HttpPostActionInterface
          */
         $model = $this->contactUsInterfaceFactory->create();
         $model
-            ->setStatus(ContactUsInterface::REPLIED_STATUS)
-            ->setCustomerName("Admin")
-            ->setEmail("admin@smile-m2.lxc")
             ->setIsAdmin(true)
-            ->setPhone("+380991111111")
             ->setReplyId($this->_request->getParam('reply_id'))
             ->setTheme($this->_request->getParam("theme"))
             ->setMessage($this->_request->getParam("comment"));
 
-        /**
-         * Uses to update message status
-         * @var ContactUsInterface $oldMessageModel
-         */
-        $oldMessageModel = $this->contactUsInterfaceFactory->create();
-        $oldMessageModel->setId($this->_request->getParam("reply_id"));
-        $oldMessageModel->setStatus(ContactUsInterface::REPLIED_STATUS);
-
         try {
             $this->contactUsRepository->save($model);
-            $this->contactUsRepository->save($oldMessageModel);
             $this->messageManager->addSuccessMessage(__("Answered successfully"));
         } catch (Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
-        return $this->_redirect("contact/actions/preview/id/" . $oldMessageModel->getId());
+        return $this->_redirect("contact/actions/preview/id/" . $model->getReplyId());
     }
 
     /**

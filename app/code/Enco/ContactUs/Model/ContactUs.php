@@ -262,16 +262,16 @@ class ContactUs extends AbstractModel implements ContactUsInterface
         if (!$valid->isValid($this->getEmail())  && false === \strpos($this->getEmail(), '@')) {
             throw new LocalizedException(__('The email address is invalid. Verify the email address and try again.'));
         }
-        if (!$valid->isValid($this->getCustomerId())) {
+        if ($this->getCustomerId() !== null && !$valid->isValid($this->getCustomerId())) {
             throw new LocalizedException(__('Customer id can\'t be 0'));
         }
-        if (!$valid->isValid($this->getReplyId())) {
+        if ($this->getReplyId()!== null && !$valid->isValid($this->getReplyId())) {
             throw new LocalizedException(__('Reply id can\'t be 0'));
         }
         if ($this->getStatus() !== null && is_int($this->getStatus()) == false) {
             throw new LocalizedException(__('Status must be int'));
         }
-        if (!$valid->isValid($this->getPhone())) {
+        if ($this->getPhone() !== null && !$valid->isValid($this->getPhone())) {
             $allowedChars = ['+','0','1','2','3','4','5','6','7','8','9','(',')','-'];
             $phone = $this->getPhone();
             $phone = str_replace(" ", "", $phone);

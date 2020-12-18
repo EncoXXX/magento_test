@@ -13,6 +13,8 @@ use Enco\ContactUs\Api\Data\ContactUsInterface;
 use Enco\ContactUs\Model\ContactUs;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchResultsInterface;
+use Magento\Framework\DataObject;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Interface ContactUsRepositoryInterface
@@ -82,4 +84,13 @@ interface ContactUsRepositoryInterface
      * @return void
      */
     public function delete(ContactUsInterface $model);
+
+    /**
+     * Returns all replied messages with main message
+     * @param int $messageId
+     *
+     * @return ContactUs[]
+     * @throws NoSuchEntityException
+     */
+    public function getWithReplied(int $messageId);
 }

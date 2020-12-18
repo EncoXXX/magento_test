@@ -13,6 +13,8 @@ use Enco\ContactUs\Api\ContactUsRepositoryInterface;
 use Enco\ContactUs\Api\Data\ContactUsInterface;
 use Enco\ContactUs\Model\ContactUs;
 use Magento\Backend\Block\Template;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Message\ManagerInterface;
 
 /**
  * Class Preview
@@ -26,17 +28,31 @@ class Preview extends Template
     protected $contactUsRepository;
 
     /**
+     * Contains main preview message
+     * @var int $messageId
+     */
+    protected $messageId = null;
+
+    /**
+     * @var ManagerInterface
+     */
+    protected $messageManager;
+
+    /**
      * Preview constructor.
      * @param Template\Context $context
      * @param ContactUsRepositoryInterface $contactUsRepository
+     * @param ManagerInterface $messageManager
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
         ContactUsRepositoryInterface $contactUsRepository,
+        ManagerInterface $messageManager,
         array $data = []
     ) {
         $this->contactUsRepository = $contactUsRepository;
+        $this->messageManager = $messageManager;
         parent::__construct($context, $data);
     }
 
@@ -44,10 +60,18 @@ class Preview extends Template
      * Returns all replied messages with main message
      *
      * @return ContactUs[]
+     * @throws NoSuchEntityException
      */
     public function getModel()
     {
-        return $this->contactUsRepository->getWithReplied($this->getMessageId());
+        $collection = null;
+        try {
+            $collection = $this->contactUsRepository->getWithReplied($this->getMessageId());
+        } catch (NoSuchEntityException $e) {
+            $this->messageManager->addErrorMessage($e->getMessage());
+        }
+        $this->messageId = $this->contactUsRepository->getMessageId();
+        return $collection;
     }
 
     /**
@@ -57,6 +81,9 @@ class Preview extends Template
      */
     public function getMessageId()
     {
+        if ($this->messageId !== null) {
+            return $this->messageId;
+        }
         return (int) $this->getRequest()->getParam(ContactUsInterface::ID);
     }
 

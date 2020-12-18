@@ -21,7 +21,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
-use Magento\Framework\DataObject;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 
@@ -62,6 +62,13 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      * @var SearchCriteriaBuilder
      */
     protected $criteriaBuilder;
+
+    /**
+     * Uses for getWithReplied to return correct message id
+     *
+     * @var int|null $messageId
+     */
+    protected $messageId = null;
 
     public function __construct(
         ResourceModel $resourceModel,
@@ -194,10 +201,23 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      * @param ContactUsInterface $model
      *
      * @return ContactUsInterface
-     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     * @throws AlreadyExistsException
      */
     public function save(ContactUsInterface $model)
     {
+        if ($model->isAdmin()) {
+            if ($model->getReplyId() !== null && is_int($model->getReplyId())) {
+                $oldMessageModel = $this->modelFactory->create();
+                $oldMessageModel->setId($model->getReplyId());
+                $oldMessageModel->setStatus(ContactUsInterface::REPLIED_STATUS);
+                $this->resourceModel->save($oldMessageModel);
+            }
+            $model
+                ->setStatus(ContactUsInterface::REPLIED_STATUS)
+                ->setCustomerName("Admin")
+                ->setEmail("admin@smile-m2.lxc")
+                ->setPhone("+380991111111");
+        }
         $this->resourceModel->save($model);
         return $model;
     }
@@ -243,7 +263,7 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      * Returns all replied messages with main message
      * @param int $messageId
      *
-     * @return DataObject[]
+     * @return ContactUs[]
      * @throws NoSuchEntityException
      */
     public function getWithReplied(int $messageId)
@@ -257,11 +277,35 @@ class ContactUsRepository implements ContactUsRepositoryInterface
             [$messageId, $messageId]
         );
 
+        /**
+         * @var ContactUs[] $model
+         */
         $model = $collection->getItems();
+
+        if ($model[$messageId]->getReplyId() !== null) {
+            $messageId = $model[$messageId]->getReplyId();
+            $collection = $this->collectionFactory->create();
+            $collection->addFieldToFilter(
+                [ContactUsInterface::ID, ContactUsInterface::REPLY_ID],
+                [$messageId, $messageId]
+            );
+            $model = $collection->getItems();
+        }
 
         if (count($model)<1) {
             throw new NoSuchEntityException(__("No items("));
         }
+
+        $this->messageId = $messageId;
         return $model;
+    }
+
+    /**
+     * Returns correct message ID for Replied messages
+     *
+     * @return int
+     */
+    public function getMessageId(){
+        return $this->messageId;
     }
 }
