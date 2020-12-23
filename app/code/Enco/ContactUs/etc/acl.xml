@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Enco_ContactUs::contact_us" translate="title" title="Contact Us" sortOrder="20" >
+                    <resource id="Enco_ContactUs::contact_us_grid" translate="title" title="Contact Us messages" sortOrder="10"/>
+                    <resource id="Enco_ContactUs::contact_us_delete" translate="title" title="Contact Us delete" sortOrder="10"/>
+                    <resource id="Enco_ContactUs::contact_us_edit" translate="title" title="Contact Us edit" sortOrder="10"/>
+                    <resource id="Enco_ContactUs::contact_us_save" translate="title" title="Contact Us save" sortOrder="10"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>
