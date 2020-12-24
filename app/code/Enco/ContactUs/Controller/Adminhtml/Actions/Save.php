@@ -2,7 +2,7 @@
 /**
  * Save action for Contact Us admin page
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @author Andriy Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Enco
@@ -85,6 +85,7 @@ class Save extends AbstractAction
         } else {
             $allowedData[ContactUs::STATUS] = $data[ContactUs::STATUS];
             $allowedData[ContactUs::ID] = $data[ContactUs::ID];
+            $model->setIsAdminEdit(true);
         }
 
         $model->setData($allowedData);
@@ -95,6 +96,7 @@ class Save extends AbstractAction
         } catch (Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
+
         return $this->_redirect('contact/actions/edit', [ContactUsInterface::ID=>$model->getId()]);
     }
 

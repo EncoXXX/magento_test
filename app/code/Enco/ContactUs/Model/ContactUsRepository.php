@@ -2,7 +2,7 @@
 /**
  * ContactUs repository
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @author Andriy Benarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Enco
@@ -16,7 +16,7 @@ use Enco\ContactUs\Api\Data\ContactUsInterfaceFactory;
 use Enco\ContactUs\Model\ResourceModel\ContactUs as ResourceModel;
 use Enco\ContactUs\Model\ResourceModel\ContactUs\CollectionFactory;
 use Exception;
-use Magento\Framework\Api\SearchCriteria;
+use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
@@ -24,17 +24,9 @@ use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Message\ManagerInterface;
 
 class ContactUsRepository implements ContactUsRepositoryInterface
 {
-
-    /**
-     * Message manager
-     *
-     * @var ManagerInterface
-     */
-    protected $messageManager;
 
     /**
      * Factory for ContactUs model
@@ -85,6 +77,24 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      */
     protected $messageId = null;
 
+    /**
+     * Admin session
+     *
+     * @var Session
+     */
+    protected $adminSession;
+
+    /**
+     * ContactUsRepository constructor.
+     *
+     * @param ResourceModel $resourceModel
+     * @param CollectionFactory $collectionFactory
+     * @param ContactUsInterfaceFactory $modelFactory
+     * @param CollectionProcessorInterface $processor
+     * @param SearchResultsInterfaceFactory $searchResultFactory
+     * @param SearchCriteriaBuilder $criteriaBuilder
+     * @param Session $adminSession
+     */
     public function __construct(
         ResourceModel $resourceModel,
         CollectionFactory $collectionFactory,
@@ -92,7 +102,7 @@ class ContactUsRepository implements ContactUsRepositoryInterface
         CollectionProcessorInterface $processor,
         SearchResultsInterfaceFactory $searchResultFactory,
         SearchCriteriaBuilder $criteriaBuilder,
-        ManagerInterface $messageManager
+        Session $adminSession
     ) {
         $this->resourceModel = $resourceModel;
         $this->collectionFactory = $collectionFactory;
@@ -100,7 +110,7 @@ class ContactUsRepository implements ContactUsRepositoryInterface
         $this->processor = $processor;
         $this->searchResultFactory = $searchResultFactory;
         $this->criteriaBuilder = $criteriaBuilder;
-        $this->messageManager = $messageManager;
+        $this->adminSession = $adminSession;
     }
 
     /**
@@ -124,6 +134,7 @@ class ContactUsRepository implements ContactUsRepositoryInterface
         if (!$model->getId()) {
             throw new NoSuchEntityException(__('No such entity with %1', $id));
         }
+
         return $model;
     }
 
@@ -137,19 +148,13 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      */
     public function getByCustomerId(int $id)
     {
-        /**
-         * Search criteria
-         *
-         * @var SearchCriteria $searchCriteria
-         */
-        $searchCriteria = $this->criteriaBuilder
+        return $this->getList($searchCriteria = $this->criteriaBuilder
             ->addFilter(
                 ContactUsInterface::CUSTOMER_ID,
                 $id,
                 'eq'
             )
-            ->create();
-        return $this->getList($searchCriteria);
+            ->create());
     }
 
     /**
@@ -162,19 +167,15 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      */
     public function getByEmail(string $email)
     {
-        /**
-         * Search criteria
-         *
-         * @var SearchCriteria $searchCriteria
-         */
-        $searchCriteria = $this->criteriaBuilder
-            ->addFilter(
-                ContactUsInterface::EMAIL,
-                $email,
-                'eq'
-            )
-            ->create();
-        return $this->getList($searchCriteria);
+        return $this->getList(
+            $this->criteriaBuilder
+                ->addFilter(
+                    ContactUsInterface::EMAIL,
+                    $email,
+                    'eq'
+                )
+                ->create()
+        );
     }
 
     /**
@@ -187,19 +188,15 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      */
     public function getByStatus(int $status)
     {
-        /**
-         * Search criteria
-         *
-         * @var SearchCriteria $searchCriteria
-         */
-        $searchCriteria = $this->criteriaBuilder
+        return $this->getList(
+            $this->criteriaBuilder
             ->addFilter(
                 ContactUsInterface::STATUS,
                 $status,
                 'eq'
             )
-            ->create();
-        return $this->getList($searchCriteria);
+            ->create()
+        );
     }
 
     /**
@@ -213,8 +210,6 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     public function getRepliedMessageById(int $messageId)
     {
         /**
-         * Search criteria
-         *
          * @var ContactUsInterface
          */
         $model = $this->modelFactory->create();
@@ -223,6 +218,7 @@ class ContactUsRepository implements ContactUsRepositoryInterface
         if (!$model->getId()) {
             throw new NoSuchEntityException(__('No such entity with replied message id %1', $messageId));
         }
+
         return $model;
     }
 
@@ -237,19 +233,24 @@ class ContactUsRepository implements ContactUsRepositoryInterface
     public function save(ContactUsInterface $model)
     {
         if ($model->isAdmin()) {
-            if ($model->getReplyId() !== null && is_int($model->getReplyId())) {
+            if ($model->getReplyId() !== null) {
                 $oldMessageModel = $this->modelFactory->create();
                 $oldMessageModel->setId($model->getReplyId());
                 $oldMessageModel->setStatus(ContactUsInterface::REPLIED_STATUS);
+                $oldMessageModel->setIsAdminEdit(true);
                 $this->resourceModel->save($oldMessageModel);
             }
-            $model
-                ->setStatus(ContactUsInterface::REPLIED_STATUS)
-                ->setCustomerName("Admin")
-                ->setEmail("admin@gmail.com")
-                ->setPhone("+380991111111");
+            if(!$model->getData(ContactUsInterface::NAME)){
+                $model->setCustomerName($this->adminSession->getUser()->getName());
+            }
+            if(!$model->getData(ContactUsInterface::EMAIL)){
+                $model->setEmail($this->adminSession->getUser()->getEmail());
+            }
+
+            $model->setStatus(ContactUsInterface::REPLIED_STATUS);
         }
         $this->resourceModel->save($model);
+
         return $model;
     }
 
@@ -291,6 +292,7 @@ class ContactUsRepository implements ContactUsRepositoryInterface
         if ($collection->getSize() == 0) {
             throw new NoSuchEntityException(__("No entity with this params"));
         }
+
         return $searchResult;
     }
 
@@ -299,7 +301,7 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      *
      * @param int $messageId
      *
-     * @return ContactUs[]
+     * @return SearchResultsInterface
      * @throws NoSuchEntityException
      */
     public function getWithReplied(int $messageId)
@@ -318,26 +320,35 @@ class ContactUsRepository implements ContactUsRepositoryInterface
         /**
          * Array with ContactUs model
          *
-         * @var ContactUs[] $model
+         * @var ContactUs[] $models
          */
-        $model = $collection->getItems();
+        $models = $collection->getItems();
 
-        if ($model[$messageId]->getReplyId() !== null) {
-            $messageId = $model[$messageId]->getReplyId();
+        if (!count($models)) {
+            throw new NoSuchEntityException(__("No items("));
+        }
+
+        if ($models[$messageId]->getReplyId() !== null) {
+            $messageId = $models[$messageId]->getReplyId();
             $collection = $this->collectionFactory->create();
             $collection->addFieldToFilter(
                 [ContactUsInterface::ID, ContactUsInterface::REPLY_ID],
                 [$messageId, $messageId]
             );
-            $model = $collection->getItems();
+            $models = $collection->getItems();
         }
-
-        if (count($model)<1) {
+        if (!count($models)) {
             throw new NoSuchEntityException(__("No items("));
         }
 
+        $searchResult = $this->searchResultFactory->create();
+
+        $searchResult->setItems($models);
+        $searchResult->setTotalCount($collection->getSize());
+
         $this->messageId = $messageId;
-        return $model;
+
+        return $searchResult;
     }
 
     /**
@@ -345,7 +356,8 @@ class ContactUsRepository implements ContactUsRepositoryInterface
      *
      * @return int
      */
-    public function getMessageId(){
+    public function getMessageId()
+    {
         return $this->messageId;
     }
 }

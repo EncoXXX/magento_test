@@ -2,7 +2,7 @@
 /**
  * Save action for preview form
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @author Andriy Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Enco
@@ -67,8 +67,6 @@ class Index extends AbstractAction implements HttpPostActionInterface
     public function execute()
     {
         /**
-         * ContactUs model
-         *
          * @var ContactUsInterface $model
          */
         $model = $this->contactUsInterfaceFactory->create();
@@ -84,6 +82,7 @@ class Index extends AbstractAction implements HttpPostActionInterface
         } catch (Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
+
         return $this->_redirect("contact/actions/preview/id/" . $model->getReplyId());
     }
 

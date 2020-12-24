@@ -2,7 +2,7 @@
 /**
  * Delete action for Contact Us admin page
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @author Andriy Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Enco
@@ -68,8 +68,6 @@ class Delete extends AbstractAction
     public function execute()
     {
         /**
-         * ContactUs model
-         *
          * @var ContactUs $model
          */
         $model = $this->modelFactory->create();
@@ -81,12 +79,11 @@ class Delete extends AbstractAction
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
+
         return $this->_redirect('contact/messages/index');
     }
 
     /**
-     * Check if user is allowed to execute this action
-     *
      * @return bool
      */
     protected function _isAllowed()

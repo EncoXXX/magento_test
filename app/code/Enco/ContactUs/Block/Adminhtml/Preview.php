@@ -2,7 +2,7 @@
 /**
  * ContactUs block for preview
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @author Andrew Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Enco
@@ -12,8 +12,8 @@ namespace Enco\ContactUs\Block\Adminhtml;
 
 use Enco\ContactUs\Api\ContactUsRepositoryInterface;
 use Enco\ContactUs\Api\Data\ContactUsInterface;
-use Enco\ContactUs\Model\ContactUs;
 use Magento\Backend\Block\Template;
+use Magento\Framework\Api\ExtensibleDataInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 
@@ -65,9 +65,9 @@ class Preview extends Template
     /**
      * Returns all replied messages with main message
      *
-     * @return ContactUs[]
+     * @return ExtensibleDataInterface[]
      */
-    public function getModel()
+    public function getMessages()
     {
         $collection = null;
         try {
@@ -76,7 +76,8 @@ class Preview extends Template
             $this->messageManager->addErrorMessage($e->getMessage());
         }
         $this->messageId = $this->contactUsRepository->getMessageId();
-        return $collection;
+
+        return $collection->getItems();
     }
 
     /**
@@ -89,6 +90,7 @@ class Preview extends Template
         if ($this->messageId !== null) {
             return $this->messageId;
         }
+
         return (int) $this->getRequest()->getParam(ContactUsInterface::ID);
     }
 

@@ -2,7 +2,7 @@
 /**
  * Data provider for ContactUs form
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @author Andriy Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Enco
@@ -24,7 +24,7 @@ class DataProvider extends AbstractDataProvider
      *
      * @var array
      */
-    protected $_loadedData = [];
+    protected $loadedData = [];
 
     /**
      * Request
@@ -66,14 +66,14 @@ class DataProvider extends AbstractDataProvider
      */
     public function getData()
     {
-        if (!empty($this->_loadedData)) {
-            return $this->_loadedData;
+        if (!empty($this->loadedData)) {
+            return $this->loadedData;
         }
 
         foreach ($this->getCollection() as $item) {
-            $this->_loadedData[$item->getId()] = $item->getData();
+            $this->loadedData[$item->getId()] = $item->getData();
         }
 
-        return $this->_loadedData;
+        return $this->loadedData;
     }
 }

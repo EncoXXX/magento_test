@@ -43,7 +43,6 @@ interface ContactUsInterface
     const NEW_MESSAGE_STATUS = 0;
     const IGNORED_STATUS = 1;
     const REPLIED_STATUS = 2;
-
     /**#@-*/
 
     /**
@@ -196,4 +195,20 @@ interface ContactUsInterface
      * @return $this
      */
     public function setPhone(string $phone) : self;
+
+    /**
+     * Set is edit flag
+     *
+     * @param bool $flag
+     *
+     * @return $this
+     */
+    public function setIsAdminEdit(bool $flag) : self;
+
+    /**
+     * Returns true if uses edit action in adminhtml
+     *
+     * @return bool
+     */
+    public function isAdminEdit() : bool;
 }

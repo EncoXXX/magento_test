@@ -1,0 +1,42 @@
+<?php
+/**
+ * Preview form for ContactUs adminhtml
+ *
+ * @category Smile
+ * @package Enco\ContactUs
+ * @author Andriy Bednarskiy <bednarsasha@gmail.com>
+ * @copyright 2020 Enco
+ */
+use Enco\ContactUs\Block\Adminhtml\Preview;
+
+
+/**
+ * @var Preview $block
+ */
+
+?>
+
+<form class="form contact"
+      action="<?= $block->escapeUrl($block->getFormAction()) ?>"
+      id="contact-form"
+      method="post"
+      data-hasrequired="<?= __('* Required Fields') ?>">
+    <fieldset class="fieldset">
+        <input name="theme" id="theme" type="hidden" value="<?= $block->getMessages()[$block->getMessageId()]->getTheme() ?>" />
+        <input name="reply_id" id="reply_id" type="hidden" value="<?= $block->getMessageId() ?>" />
+        <div class="field comment required">
+            <label class="label" for="comment"><span><?= __('Answer') ?></span></label>
+            <div class="control">
+                <textarea name="comment" id="comment" title="<?= $block->escapeHtml(__('Answer')) ?>" class="input-text" cols="50" rows="1" data-validate="{required:true}"></textarea>
+            </div>
+        </div>
+        <input name="form_key" type="hidden" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>" />
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="action submit primary">
+                <span><?= $block->escapeHtml(__('Submit')) ?></span>
+            </button>
+        </div>
+    </div>
+</form>

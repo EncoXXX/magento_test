@@ -2,13 +2,13 @@
 /**
  * Helper for Contact Us
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @author Andriy Bednarskiy
  * @copyright 2020 Enco
  */
 
-namespace Enco\ContactUs\Helper;
+namespace Enco\ContactUs\ViewModel;
 
 use Enco\ContactUs\Plugin\Controller\Index\PostPlugin;
 use Magento\Customer\Model\Session;
@@ -69,6 +69,7 @@ class Data extends AbstractHelper
             $this->dataLoaded = true;
             $this->dataPersistor->clear(PostPlugin::DATA_PERSISTOR_ID);
         }
+
         return $this->persistorData;
     }
 
@@ -102,6 +103,7 @@ class Data extends AbstractHelper
         if ($this->customerSession->isLoggedIn()) {
             return $this->customerSession->getCustomerDataObject()->getFirstname() ?: '';
         }
+
         return '';
     }
 
@@ -118,6 +120,7 @@ class Data extends AbstractHelper
         if ($this->customerSession->isLoggedIn()) {
             return $this->customerSession->getCustomerDataObject()->getEmail() ?: '';
         }
+
         return '';
     }
 
@@ -168,11 +171,12 @@ class Data extends AbstractHelper
      *
      * @return Zend_Validate_NotEmpty
      */
-    public function getValidator()
+    protected function getValidator()
     {
         if ($this->validator == null) {
             $this->validator = new Zend_Validate_NotEmpty();
         }
+
         return $this->validator;
     }
 }

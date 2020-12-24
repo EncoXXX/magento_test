@@ -13,11 +13,48 @@ namespace Enco\ContactUs\Setup\Patch\Data;
 use Enco\ContactUs\Api\ContactUsRepositoryInterface;
 use Enco\ContactUs\Api\Data\ContactUsInterface;
 use Enco\ContactUs\Api\Data\ContactUsInterfaceFactory;
+use Exception;
+use Magento\Framework\File\Csv;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 
 class TestData implements DataPatchInterface
 {
+    /**#@+
+     * Num of created requests
+     */
+    const NUM_OF_REQUESTS = 50;
+    /**#@-**/
+
+    /**#@+
+     * Min and max num of answered messages to request
+     */
+    const MIN_ANSWER_NUM = 1;
+    const MAX_ANSWER_NUM = 4;
+    /**#@-**/
+
+    /**#@+
+     * Filenames of random data
+     */
+    const CUSTOMER_DATA_CSV_FILE = __DIR__ . "/Files/customer_data.csv";
+    const ANSWER_CSV_FILE = __DIR__ . "/Files/answer_data.csv";
+    /**#@-**/
+
+    /**#@+
+     * Indexes for customer data csv
+     */
+    const NAME_INDEX = 0;
+    const THEME_INDEX = 1;
+    const MESSAGE_INDEX = 2;
+    const EMAIL_INDEX = 3;
+    const PHONE_INDEX = 4;
+    /**#@-**/
+
+    /**#@-**/
+    const ADMIN_NAME = 'Admin';
+    const ADMIN_EMAIL = 'admin@smile-m2.lxc';
+    /**#@-**/
+    
     /**
      * Data setup for module
      *
@@ -40,20 +77,44 @@ class TestData implements DataPatchInterface
     protected $contactUsRepository;
 
     /**
+     * Csv object
+     *
+     * @var Csv
+     */
+    protected $csv;
+
+    /**
+     * Array with answer data
+     *
+     * @var null|array $randomAnswerArray
+     */
+    protected $randomAnswerArray = null;
+
+    /**
+     * Array with customer data
+     *
+     * @var null|array $randomDataArray
+     */
+    protected $randomDataArray = null;
+
+    /**
      * TestData constructor.
      *
      * @param ModuleDataSetupInterface $moduleDataSetup
      * @param ContactUsRepositoryInterface $contactUsRepository
      * @param ContactUsInterfaceFactory $contactUsFactory
+     * @param Csv $csv
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
         ContactUsRepositoryInterface $contactUsRepository,
-        ContactUsInterfaceFactory $contactUsFactory
+        ContactUsInterfaceFactory $contactUsFactory,
+        Csv $csv
     ) {
         $this->moduleDataSetup = $moduleDataSetup;
         $this->contactUsFactory = $contactUsFactory;
         $this->contactUsRepository = $contactUsRepository;
+        $this->csv = $csv;
     }
 
     /**
@@ -80,34 +141,35 @@ class TestData implements DataPatchInterface
      * Apply method for this patch
      *
      * @return $this
+     * @throws Exception
      */
     public function apply()
     {
         $this->moduleDataSetup->getConnection()->startSetup();
 
         /**
-         * Uses to get some random data for columns
-         *
          * @var array $randomData
          */
         $randomData = $this->fillRandomDataArray();
-
-        for ($i = 0; $i < 50; $i++) {
+        $max = count($randomData) - 1;
+        for ($i = 0; $i < self::NUM_OF_REQUESTS; $i++) {
             $model = $this->contactUsFactory->create();
             $model
-                ->setCustomerName($randomData[ContactUsInterface::NAME][rand(0, 5)])
-                ->setTheme($randomData[ContactUsInterface::THEME][rand(0, 5)])
-                ->setMessage($randomData[ContactUsInterface::MESSAGE][rand(0, 5)])
-                ->setEmail($randomData[ContactUsInterface::EMAIL][rand(0, 5)])
+                ->setCustomerName($randomData[self::NAME_INDEX][rand(0, $max)])
+                ->setTheme($randomData[self::THEME_INDEX][rand(0, $max)])
+                ->setMessage($randomData[self::MESSAGE_INDEX][rand(0, $max)])
+                ->setEmail($randomData[self::EMAIL_INDEX][rand(0, $max)])
                 ->setStatus(ContactUsInterface::NEW_MESSAGE_STATUS)
                 ->setIsAdmin(false)
-                ->setPhone($randomData[ContactUsInterface::PHONE][rand(0, 5)]);
+                ->setPhone($randomData[self::PHONE_INDEX][rand(0, $max)]);
             $replyId = $this->contactUsRepository->save($model)->getId();
-            for ($j = 0; $j < rand(1, 4); $j++) {
+            for ($j = 0; $j < rand(self::MIN_ANSWER_NUM, self::MAX_ANSWER_NUM); $j++) {
                 $replyModel = $this->contactUsFactory->create();
                 $replyModel
                     ->setIsAdmin(true)
                     ->setReplyId($replyId)
+                    ->setCustomerName(self::ADMIN_NAME)
+                    ->setEmail(self::ADMIN_EMAIL)
                     ->setMessage($this->getRandomAnswer())
                     ->setTheme($model->getTheme());
                 $this->contactUsRepository->save($replyModel);
@@ -115,51 +177,50 @@ class TestData implements DataPatchInterface
         }
 
         $this->moduleDataSetup->getConnection()->endSetup();
+
         return $this;
     }
 
     /**
-     * Fill random data array
-     * All arrays have 6 elements
+     * Fill random data array from csv
      *
      * @return string[][]
+     * @throws Exception
      */
     protected function fillRandomDataArray()
     {
-        return [
-            ContactUsInterface::NAME => [
-                'Andrew', 'Max', 'Anton', 'Kate', 'Vitaliy', 'Mariya'
-            ],
-            ContactUsInterface::THEME => [
-                'First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth'
-            ],
-            ContactUsInterface::MESSAGE => [
-                'All ok', 'Test message', 'The best shop in the world', 'Will you give answer?', 'BlaBlaBla', 'Test request'
-            ],
-            ContactUsInterface::EMAIL => [
-                'test@mail.com', 'vasya1991@gmail.com', 'blalbalba@test.com', 'MyNaMeIsAnDrEw@email.ua', 'nooooo@gmail.com', 'fifa@football.org'
-            ],
-            ContactUsInterface::PHONE => [
-                '+380988196258', '+380975073588', '+380955716854', '+380965714259', '+380975148322', '+380684152790'
-            ]
-        ];
+        if ($this->randomDataArray) {
+            return $this->randomDataArray;
+        }
+
+        $this->randomDataArray = $this->csv->getData(self::CUSTOMER_DATA_CSV_FILE);
+
+        if (!count($this->randomDataArray)) {
+            throw new Exception(__("No items in file %1", self::CUSTOMER_DATA_CSV_FILE));
+        }
+
+        return $this->randomDataArray;
     }
 
     /**
-     * Returns random admin answer
+     * Returns random admin answer from csv
      *
      * @return string
+     * @throws Exception
      */
     protected function getRandomAnswer()
     {
-        $randomAnswerArray = [
-            'Thanks for answer',
-            'Fixed, can I help you with anything else?',
-            'Sorry for this trouble, it will bi fixed in the shortest possible time',
-            'Thanks for your mark',
-            'Can you give me order id?',
-            'Best wishes, good bye'
-        ];
-        return $randomAnswerArray[rand(0, 5)];
+        if (!$this->randomAnswerArray) {
+            $this->randomAnswerArray = $this->csv
+                ->setDelimiter(';')
+                ->getData(self::ANSWER_CSV_FILE);
+        }
+        $count = count($this->randomAnswerArray);
+
+        if (!$count) {
+            throw new Exception(__("No items in file %1", self::ANSWER_CSV_FILE));
+        }
+
+        return $this->randomAnswerArray[rand(0, $count - 1)][0];
     }
 }

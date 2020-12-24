@@ -122,15 +122,11 @@ class PostPlugin
     public function aroundExecute(OverrideObject $object, callable $proceed)
     {
         /**
-         * Request
-         *
          * @var RequestInterface $request
          */
         $request = $this->request;
 
         /**
-         * ContactUs model
-         *
          * @var ContactUsInterface $model
          */
         $model = $this->modelFactory->create();
@@ -153,6 +149,7 @@ class PostPlugin
         }
 
         $this->dataPersistor->set(self::DATA_PERSISTOR_ID, $this->request->getParams());
+
         return $this->resultRedirectFactory->create()->setPath('contact/index');
     }
 }

@@ -2,7 +2,7 @@
 /**
  * Admin Controller for grid show
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @author Andriy Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Enco
@@ -64,6 +64,7 @@ class Index extends AbstractAction implements HttpGetActionInterface
 
         $resultPage->setActiveMenu("Enco_ContactUs::contact_us_menu");
         $resultPage->getConfig()->getTitle()->prepend("Contact Us Messages");
+
         return $resultPage;
     }
 

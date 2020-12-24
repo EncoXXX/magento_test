@@ -12,6 +12,11 @@
                 class    = "Enco\ContactUs\Block\Adminhtml\Preview"
                 template = "Enco_ContactUs::preview.phtml"
             />
+            <block
+                name     = "contactus_preview_form"
+                class    = "Enco\ContactUs\Block\Adminhtml\Preview"
+                template = "Enco_ContactUs::preview_form.phtml"
+            />
         </referenceContainer>
     </body>
 </page>

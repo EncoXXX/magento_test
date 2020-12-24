@@ -2,7 +2,7 @@
 /**
  * Repository interface of ContactUs
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @authod Andriy Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Enco
@@ -99,7 +99,7 @@ interface ContactUsRepositoryInterface
      *
      * @param int $messageId
      *
-     * @return ContactUs[]
+     * @return SearchResultsInterface
      * @throws NoSuchEntityException
      */
     public function getWithReplied(int $messageId);

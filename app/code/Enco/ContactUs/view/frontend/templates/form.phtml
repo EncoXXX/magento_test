@@ -2,7 +2,7 @@
 /**
  * Form template for Contact Us page
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @author Andriy Brednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Enco
@@ -10,12 +10,6 @@
 
 /** @var Enco\ContactUs\Block\ContactForm $block */
 
-/**
- * Data helper
- *
- * @var Enco\ContactUs\Helper\Data $helper
- */
-$helper = $this->helper(Enco\ContactUs\Helper\Data::class);
 ?>
 <form class="form contact"
       action="<?= $block->escapeUrl($block->getFormAction()) ?>"
@@ -29,31 +23,31 @@ $helper = $this->helper(Enco\ContactUs\Helper\Data::class);
         <div class="field name required">
             <label class="label" for="name"><span><?= $block->escapeHtml(__('Name')) ?></span></label>
             <div class="control">
-                <input name="name" id="name" title="<?= $block->escapeHtmlAttr(__('Name')) ?>" value="<?= $block->escapeHtmlAttr($helper->getCustomerName()) ?>" class="input-text" type="text" data-validate="{required:true}"/>
+                <input name="name" id="name" title="<?= $block->escapeHtmlAttr(__('Name')) ?>" value="<?= $block->escapeHtmlAttr($block->getCustomerName()) ?>" class="input-text" type="text" data-validate="{required:true}"/>
             </div>
         </div>
         <div class="field email required">
             <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
             <div class="control">
-                <input name="email" id="email" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" value="<?= $block->escapeHtmlAttr($helper->getCustomerEmail()) ?>" class="input-text" type="email" data-validate="{required:true, 'validate-email':true}"/>
+                <input name="email" id="email" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" value="<?= $block->escapeHtmlAttr($block->getCustomerEmail()) ?>" class="input-text" type="email" data-validate="{required:true, 'validate-email':true}"/>
             </div>
         </div>
         <div class="field telephone">
             <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
             <div class="control">
-                <input name="telephone" id="telephone" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" value="<?= $block->escapeHtmlAttr($helper->getCustomerPhone()) ?>" class="input-text" type="text" />
+                <input name="telephone" id="telephone" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" value="<?= $block->escapeHtmlAttr($block->getCustomerPhone()) ?>" class="input-text" type="text" />
             </div>
         </div>
         <div class="field theme required">
             <label class="label" for="theme"><span><?= $block->escapeHtml(__('Theme')) ?></span></label>
             <div class="control">
-                <textarea name="theme" id="theme" title="<?= $block->escapeHtmlAttr(__('Theme')) ?>" class="input-text" cols="5" rows="1" data-validate="{required:true}"><?= $block->escapeHtml($helper->getTheme()) ?></textarea>
+                <textarea name="theme" id="theme" title="<?= $block->escapeHtmlAttr(__('Theme')) ?>" class="input-text" cols="5" rows="1" data-validate="{required:true}"><?= $block->escapeHtml($block->getTheme()) ?></textarea>
             </div>
         </div>
         <div class="field comment required">
             <label class="label" for="comment"><span><?= $block->escapeHtml(__('What’s on your mind?')) ?></span></label>
             <div class="control">
-                <textarea name="comment" id="comment" title="<?= $block->escapeHtmlAttr(__('What’s on your mind?')) ?>" class="input-text" cols="5" rows="3" data-validate="{required:true}"><?= $block->escapeHtml($helper->getComment()) ?></textarea>
+                <textarea name="comment" id="comment" title="<?= $block->escapeHtmlAttr(__('What’s on your mind?')) ?>" class="input-text" cols="5" rows="3" data-validate="{required:true}"><?= $block->escapeHtml($block->getComment()) ?></textarea>
             </div>
         </div>
     </fieldset>

@@ -2,7 +2,7 @@
 /**
  * ContactUs model
  *
- * @category Smile Smile
+ * @category Smile
  * @package Enco\ContactUs
  * @author Andriy Bednarskiy <bednarsasha@gmail.com>
  * @copyright 2020 Enco
@@ -24,6 +24,13 @@ class ContactUs extends AbstractModel implements ContactUsInterface
      * @var ContactUsValidator $validatorBeforeSave
      */
     protected $validatorBeforeSave;
+
+    /**
+     * If model is edited by admin this flag equals true
+     *
+     * @var bool $isAdminEdit
+     */
+    protected $isAdminEdit = false;
 
     /**
      * ContactUs constructor.
@@ -263,5 +270,29 @@ class ContactUs extends AbstractModel implements ContactUsInterface
     public function setPhone(string $phone): ContactUsInterface
     {
         return $this->setData(static::PHONE, $phone);
+    }
+
+    /**
+     * Set is admin edit flag
+     *
+     * @param bool $flag
+     *
+     * @return ContactUsInterface
+     */
+    public function setIsAdminEdit(bool $flag): ContactUsInterface
+    {
+        $this->isAdminEdit = $flag;
+
+        return $this;
+    }
+
+    /**
+     * Returns true if uses edit action in adminhtml
+     *
+     * @return bool
+     */
+    public function isAdminEdit(): bool
+    {
+        return $this->isAdminEdit;
     }
 }
