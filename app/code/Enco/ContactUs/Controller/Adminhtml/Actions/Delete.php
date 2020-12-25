@@ -75,7 +75,7 @@ class Delete extends AbstractAction
 
         try {
             $this->modelRepo->delete($model);
-            $this->messageManager->addSuccessMessage("Deleted successfully");
+            $this->messageManager->addSuccessMessage(__("Deleted successfully"));
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }

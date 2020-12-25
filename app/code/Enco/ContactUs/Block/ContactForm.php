@@ -11,7 +11,6 @@
 namespace Enco\ContactUs\Block;
 
 use Enco\ContactUs\ViewModel\Data as ContactUsViewModel;
-use Magento\Framework\File\Csv;
 use Magento\Framework\View\Element\Template;
 
 /**
@@ -25,7 +24,6 @@ class ContactForm extends Template
      * @var ContactUsViewModel
      */
     protected $viewModel;
-
 
     /**
      * ContactForm constructor.
@@ -41,6 +39,7 @@ class ContactForm extends Template
     ) {
         $this->viewModel = $viewModel;
         parent::__construct($context, $data);
+
     }
 
     /**
@@ -102,4 +101,5 @@ class ContactForm extends Template
     {
         return $this->viewModel->getComment();
     }
+
 }

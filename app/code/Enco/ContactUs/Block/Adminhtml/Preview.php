@@ -43,6 +43,7 @@ class Preview extends Template
      */
     protected $messageManager;
 
+
     /**
      * Preview constructor.
      *

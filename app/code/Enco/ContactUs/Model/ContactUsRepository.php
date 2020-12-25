@@ -324,7 +324,7 @@ class ContactUsRepository implements ContactUsRepositoryInterface
          */
         $models = $collection->getItems();
 
-        if (!count($models)) {
+        if (!$models) {
             throw new NoSuchEntityException(__("No items("));
         }
 
@@ -337,7 +337,7 @@ class ContactUsRepository implements ContactUsRepositoryInterface
             );
             $models = $collection->getItems();
         }
-        if (!count($models)) {
+        if (!$models) {
             throw new NoSuchEntityException(__("No items("));
         }
 

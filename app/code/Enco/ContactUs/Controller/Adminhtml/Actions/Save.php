@@ -35,31 +35,31 @@ class Save extends AbstractAction
     /**
      * Factory for ContactUs model
      *
-     * @var ContactUsInterfaceFactory $ContactUsInterfaceFactory
+     * @var ContactUsInterfaceFactory $contactUsInterfaceFactory
      */
-    protected $ContactUsInterfaceFactory;
+    protected $contactUsInterfaceFactory;
 
     /**
      * Repository for ContactUs module
      *
      * @var ContactUsRepositoryInterface;
      */
-    protected $ContactUsRepository;
+    protected $contactUsRepository;
 
     /**
      * Save constructor.
      *
      * @param Action\Context $context
-     * @param ContactUsRepositoryInterface $ContactUsRepository
-     * @param ContactUsInterfaceFactory $ContactUsInterfaceFactory
+     * @param ContactUsRepositoryInterface $contactUsRepository
+     * @param ContactUsInterfaceFactory $contactUsInterfaceFactory
      */
     public function __construct(
         Action\Context $context,
-        ContactUsRepositoryInterface $ContactUsRepository,
-        ContactUsInterfaceFactory $ContactUsInterfaceFactory
+        ContactUsRepositoryInterface $contactUsRepository,
+        ContactUsInterfaceFactory $contactUsInterfaceFactory
     ) {
-        $this->ContactUsInterfaceFactory = $ContactUsInterfaceFactory;
-        $this->ContactUsRepository = $ContactUsRepository;
+        $this->сontactUsInterfaceFactory = $contactUsInterfaceFactory;
+        $this->сontactUsRepository = $contactUsRepository;
         parent::__construct($context);
     }
 
@@ -75,7 +75,7 @@ class Save extends AbstractAction
          *
          * @var ContactUs $model;
          */
-        $model = $this->ContactUsInterfaceFactory->create();
+        $model = $this->contactUsInterfaceFactory->create();
         $data = $this->getRequest()->getParams();
         $allowedData = [];
 
@@ -91,8 +91,8 @@ class Save extends AbstractAction
         $model->setData($allowedData);
 
         try {
-            $this->ContactUsRepository->save($model);
-            $this->messageManager->addSuccessMessage("Saved successfully");
+            $this->contactUsRepository->save($model);
+            $this->messageManager->addSuccessMessage(__("Saved successfully"));
         } catch (Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }

@@ -14,9 +14,11 @@ use Enco\ContactUs\Api\ContactUsRepositoryInterface;
 use Enco\ContactUs\Api\Data\ContactUsInterface;
 use Enco\ContactUs\Api\Data\ContactUsInterfaceFactory;
 use Exception;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\File\Csv;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Magento\Framework\Setup\SampleData\FixtureManager;
 
 class TestData implements DataPatchInterface
 {
@@ -36,25 +38,15 @@ class TestData implements DataPatchInterface
     /**#@+
      * Filenames of random data
      */
-    const CUSTOMER_DATA_CSV_FILE = __DIR__ . "/Files/customer_data.csv";
-    const ANSWER_CSV_FILE = __DIR__ . "/Files/answer_data.csv";
-    /**#@-**/
-
-    /**#@+
-     * Indexes for customer data csv
-     */
-    const NAME_INDEX = 0;
-    const THEME_INDEX = 1;
-    const MESSAGE_INDEX = 2;
-    const EMAIL_INDEX = 3;
-    const PHONE_INDEX = 4;
+    const CUSTOMER_DATA_CSV_FILE = "Enco_ContactUs::fixtures/customer_data.csv";
+    const ANSWER_CSV_FILE = "Enco_ContactUs::fixtures/answer_data.csv";
     /**#@-**/
 
     /**#@-**/
     const ADMIN_NAME = 'Admin';
     const ADMIN_EMAIL = 'admin@smile-m2.lxc';
     /**#@-**/
-    
+
     /**
      * Data setup for module
      *
@@ -77,13 +69,6 @@ class TestData implements DataPatchInterface
     protected $contactUsRepository;
 
     /**
-     * Csv object
-     *
-     * @var Csv
-     */
-    protected $csv;
-
-    /**
      * Array with answer data
      *
      * @var null|array $randomAnswerArray
@@ -98,22 +83,39 @@ class TestData implements DataPatchInterface
     protected $randomDataArray = null;
 
     /**
+     * Fixture manager
+     *
+     * @var FixtureManager
+     */
+    protected $fixtureManager;
+
+    /**
+     * Csv object
+     *
+     * @var Csv
+     */
+    protected $csv;
+
+    /**
      * TestData constructor.
      *
      * @param ModuleDataSetupInterface $moduleDataSetup
      * @param ContactUsRepositoryInterface $contactUsRepository
      * @param ContactUsInterfaceFactory $contactUsFactory
      * @param Csv $csv
+     * @param FixtureManager $fixtureManager
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
         ContactUsRepositoryInterface $contactUsRepository,
         ContactUsInterfaceFactory $contactUsFactory,
-        Csv $csv
+        Csv $csv,
+        FixtureManager $fixtureManager
     ) {
         $this->moduleDataSetup = $moduleDataSetup;
         $this->contactUsFactory = $contactUsFactory;
         $this->contactUsRepository = $contactUsRepository;
+        $this->fixtureManager = $fixtureManager;
         $this->csv = $csv;
     }
 
@@ -155,13 +157,13 @@ class TestData implements DataPatchInterface
         for ($i = 0; $i < self::NUM_OF_REQUESTS; $i++) {
             $model = $this->contactUsFactory->create();
             $model
-                ->setCustomerName($randomData[self::NAME_INDEX][rand(0, $max)])
-                ->setTheme($randomData[self::THEME_INDEX][rand(0, $max)])
-                ->setMessage($randomData[self::MESSAGE_INDEX][rand(0, $max)])
-                ->setEmail($randomData[self::EMAIL_INDEX][rand(0, $max)])
+                ->setCustomerName($randomData[ContactUsInterface::NAME][rand(0, $max)])
+                ->setTheme($randomData[ContactUsInterface::THEME][rand(0, $max)])
+                ->setMessage($randomData[ContactUsInterface::MESSAGE][rand(0, $max)])
+                ->setEmail($randomData[ContactUsInterface::EMAIL][rand(0, $max)])
                 ->setStatus(ContactUsInterface::NEW_MESSAGE_STATUS)
                 ->setIsAdmin(false)
-                ->setPhone($randomData[self::PHONE_INDEX][rand(0, $max)]);
+                ->setPhone($randomData[ContactUsInterface::PHONE][rand(0, $max)]);
             $replyId = $this->contactUsRepository->save($model)->getId();
             for ($j = 0; $j < rand(self::MIN_ANSWER_NUM, self::MAX_ANSWER_NUM); $j++) {
                 $replyModel = $this->contactUsFactory->create();
@@ -193,11 +195,7 @@ class TestData implements DataPatchInterface
             return $this->randomDataArray;
         }
 
-        $this->randomDataArray = $this->csv->getData(self::CUSTOMER_DATA_CSV_FILE);
-
-        if (!count($this->randomDataArray)) {
-            throw new Exception(__("No items in file %1", self::CUSTOMER_DATA_CSV_FILE));
-        }
+        $this->randomDataArray = $this->getData(self::CUSTOMER_DATA_CSV_FILE);
 
         return $this->randomDataArray;
     }
@@ -210,17 +208,36 @@ class TestData implements DataPatchInterface
      */
     protected function getRandomAnswer()
     {
-        if (!$this->randomAnswerArray) {
-            $this->randomAnswerArray = $this->csv
-                ->setDelimiter(';')
-                ->getData(self::ANSWER_CSV_FILE);
-        }
-        $count = count($this->randomAnswerArray);
+        $data = $this->getData(self::ANSWER_CSV_FILE);
+        $max = count($data) - 1;
+        return $data["Answer"][rand(0, $max)];
+    }
 
-        if (!$count) {
-            throw new Exception(__("No items in file %1", self::ANSWER_CSV_FILE));
+    /**
+     * Returns data with keys from CSV
+     *
+     * @param $filename
+     *
+     * @return array
+     * @throws LocalizedException
+     * @throws Exception
+     */
+    protected function getData($filename)
+    {
+        $filename = $this->fixtureManager->getFixture($filename);
+        $rawData = $this->csv->getData($filename);
+        if (!$rawData) {
+            throw new Exception(__("No items in file %1", $filename));
+        }
+        $headers = array_shift($rawData);
+        $keyedData = [];
+
+        foreach ($rawData as $row_index => $row) {
+            foreach ($row as $column_index => $column) {
+                $keyedData[$headers[$column_index]][] = $column;
+            }
         }
 
-        return $this->randomAnswerArray[rand(0, $count - 1)][0];
+        return $keyedData;
     }
 }

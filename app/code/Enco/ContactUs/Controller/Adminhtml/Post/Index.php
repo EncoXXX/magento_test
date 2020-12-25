@@ -83,7 +83,7 @@ class Index extends AbstractAction implements HttpPostActionInterface
             $this->messageManager->addErrorMessage($e->getMessage());
         }
 
-        return $this->_redirect("contact/actions/preview/id/" . $model->getReplyId());
+        return $this->_redirect('contact/actions/preview', ['id'=>$model->getReplyId()]);
     }
 
     /**

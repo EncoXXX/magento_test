@@ -102,14 +102,15 @@ class ContactUsValidator extends AbstractValidator
         $messages = [];
         $id = $model->getId();
 
-        if (intval($id) == 0) {
+        if (intval($model->getId()) == 0) {
             $id = -1;
         }
-        if ($id == '0') {
+        if ($model->getId() == '0') {
             $id = 0;
         }
         if ($id == -1) {
             $messages['invalid_id'] = (__('Invalid ID'));
+            $this->_addMessages($messages);
         }
 
         return empty($messages);

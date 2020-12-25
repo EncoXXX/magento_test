@@ -63,7 +63,7 @@ class Index extends AbstractAction implements HttpGetActionInterface
         $resultPage = $this->resultPageFactory->create();
 
         $resultPage->setActiveMenu("Enco_ContactUs::contact_us_menu");
-        $resultPage->getConfig()->getTitle()->prepend("Contact Us Messages");
+        $resultPage->getConfig()->getTitle()->prepend(__("Contact Us Messages"));
 
         return $resultPage;
     }
