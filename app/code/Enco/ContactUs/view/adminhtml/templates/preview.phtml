@@ -1,0 +1,36 @@
+<?php
+/**
+ * Preview template in adminhtml
+ *
+ * @category Smile
+ * @package Enco\ContactUs
+ * @author Andriy Bednarskiy <bednarsasha@gmail.com>
+ * @copyright 2020 Enco
+ */
+
+use Enco\ContactUs\Block\Adminhtml\Preview;
+use Enco\ContactUs\Model\ContactUs;
+
+/**
+ * @var Preview $block
+ */
+
+$messages = $block->getMessages();
+
+echo "<h1>" . $messages[$block->getMessageId()]->getTheme() . "</h1>";
+
+foreach ($messages as $message) {
+    ?>
+        <p>
+            <?= $message->getCustomerName(); ?> (<?= $message->getCreatedAt()?>)
+        </p>
+        <p>
+            <?= $message->getMessage()?>
+        </p>
+        <hr>
+
+    <br>
+    <?php
+}
+?>
+

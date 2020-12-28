@@ -1,0 +1,61 @@
+<?php
+/**
+ * Form template for Contact Us page
+ *
+ * @category Smile
+ * @package Enco\ContactUs
+ * @author Andriy Brednarskiy <bednarsasha@gmail.com>
+ * @copyright 2020 Enco
+ */
+
+/** @var Enco\ContactUs\Block\ContactForm $block */
+
+?>
+<form class="form contact"
+      action="<?= $block->escapeUrl($block->getFormAction()) ?>"
+      id="contact-form"
+      method="post"
+      data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>"
+      data-mage-init='{"validation":{}}'>
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= $block->escapeHtml(__('Write Us')) ?></span></legend><br />
+        <div class="field note no-label"><?= $block->escapeHtml(__('Jot us a note and we’ll get back to you as quickly as possible.')) ?></div>
+        <div class="field name required">
+            <label class="label" for="name"><span><?= $block->escapeHtml(__('Name')) ?></span></label>
+            <div class="control">
+                <input name="name" id="name" title="<?= $block->escapeHtmlAttr(__('Name')) ?>" value="<?= $block->escapeHtmlAttr($block->getCustomerName()) ?>" class="input-text" type="text" data-validate="{required:true}"/>
+            </div>
+        </div>
+        <div class="field email required">
+            <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+            <div class="control">
+                <input name="email" id="email" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" value="<?= $block->escapeHtmlAttr($block->getCustomerEmail()) ?>" class="input-text" type="email" data-validate="{required:true, 'validate-email':true}"/>
+            </div>
+        </div>
+        <div class="field telephone">
+            <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+            <div class="control">
+                <input name="telephone" id="telephone" title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>" value="<?= $block->escapeHtmlAttr($block->getCustomerPhone()) ?>" class="input-text" type="text" />
+            </div>
+        </div>
+        <div class="field theme required">
+            <label class="label" for="theme"><span><?= $block->escapeHtml(__('Theme')) ?></span></label>
+            <div class="control">
+                <textarea name="theme" id="theme" title="<?= $block->escapeHtmlAttr(__('Theme')) ?>" class="input-text" cols="5" rows="1" data-validate="{required:true}"><?= $block->escapeHtml($block->getTheme()) ?></textarea>
+            </div>
+        </div>
+        <div class="field comment required">
+            <label class="label" for="comment"><span><?= $block->escapeHtml(__('What’s on your mind?')) ?></span></label>
+            <div class="control">
+                <textarea name="comment" id="comment" title="<?= $block->escapeHtmlAttr(__('What’s on your mind?')) ?>" class="input-text" cols="5" rows="3" data-validate="{required:true}"><?= $block->escapeHtml($block->getComment()) ?></textarea>
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="action submit primary">
+                <span><?= $block->escapeHtml(__('Submit')) ?></span>
+            </button>
+        </div>
+    </div>
+</form>
