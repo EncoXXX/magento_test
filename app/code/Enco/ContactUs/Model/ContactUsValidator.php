@@ -121,31 +121,31 @@ class ContactUsValidator extends AbstractValidator
         $messages = [];
 
         if (!$this->validatorNotEmpty->isValid($model->getCustomerName())) { // Ломається тут коли намагаюсь дати відповідь з прев'ю
-            $messages['invalid_customer_name'] = (__('Enter the Name and try again.'));
+            $messages['invalid_customer_name'] = __('Enter the Name and try again.');
         }
         if (!$this->validatorNotEmpty->isValid($model->getMessage())) {
-            $messages['invalid_message'] = (__('Enter the message and try again.'));
+            $messages['invalid_message'] = __('Enter the message and try again.');
         }
         if (!$this->validatorNotEmpty->isValid($model->getTheme())) {
-            $messages['invalid_theme'] = (__('Enter the theme and try again.'));
+            $messages['invalid_theme'] = __('Enter the theme and try again.');
         }
 
         if (!$this->emailValidator->isValid($model->getEmail())) {
-            $messages['invalid_email'] = (__('The email address is invalid. Verify the email address and try again.'));
+            $messages['invalid_email'] = __('The email address is invalid. Verify the email address and try again.');
         }
         if ($model->getCustomerId() !== null && !$this->validatorNotEmpty->isValid($model->getCustomerId())) {
-            $messages['invalid_customer_id'] = (__('Customer id can\'t be 0'));
+            $messages['invalid_customer_id'] = __('Customer id can\'t be 0');
         }
         //Make with "!==null" because reply id can be 0, Zend validator does not pass such design
         if ($model->getReplyId()!== null && !$this->validatorNotEmpty->isValid($model->getReplyId())) {
-            $messages['invalid_reply_id'] = (__('Reply id can\'t be 0'));
+            $messages['invalid_reply_id'] = __('Reply id can\'t be 0');
         }
         //Make with "!==null" because status can be 0, Zend validator does not pass such design
         if ($model->getStatus() !== null && !is_int($model->getStatus())) {
-            $messages['invalid_status'] = (__('Status must be int'));
+            $messages['invalid_status'] = __('Status must be int');
         }
         if (!$this->isValidPhone($model->getPhone())) {
-            $messages['invalid_phone'] = (__('Invalid phone'));
+            $messages['invalid_phone'] = __('Invalid phone');
         }
 
         return $messages;
