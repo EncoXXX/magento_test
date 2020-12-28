@@ -100,16 +100,9 @@ class ContactUsValidator extends AbstractValidator
     public function isValidEditModel($model)
     {
         $messages = [];
-        $id = $model->getId();
 
         if (intval($model->getId()) == 0) {
-            $id = -1;
-        }
-        if ($model->getId() == '0') {
-            $id = 0;
-        }
-        if ($id == -1) {
-            $messages['invalid_id'] = (__('Invalid ID'));
+            $messages['invalid_id'] = __('Invalid ID');
             $this->_addMessages($messages);
         }
 
